@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Baú Amaldiçoado — Kit do Mestre do Jogo</title>
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+    .hero-landing {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-landing::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(201,168,76,.12) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(139,26,26,.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(108,52,131,.06) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    .hero-skull {
+      width: 120px; height: 120px;
+      margin-bottom: 1.5rem;
+      opacity: .2;
+      animation: flicker 4s ease-in-out infinite;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 900;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: .5rem;
+      text-shadow: 0 0 40px rgba(201,168,76,.3);
+    }
+    .hero-sub {
+      font-family: var(--font-accent);
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--text-muted);
+      margin-bottom: .5rem;
+    }
+    .hero-tagline {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: rgba(232,224,208,.4);
+      font-size: 1rem;
+      max-width: 500px;
+      margin-bottom: 3rem;
+    }
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      max-width: 900px;
+      width: 100%;
+      position: relative;
+    }
+    .doc-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .75rem;
+      padding: 2rem 1.5rem;
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      border-radius: var(--radius-md);
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+      text-align: center;
+      color: var(--text-light);
+    }
+    .doc-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold);
+      box-shadow: 0 8px 30px rgba(201,168,76,.15);
+      color: var(--text-light);
+    }
+    .doc-card svg { width: 48px; height: 48px; opacity: .5; transition: opacity .3s; }
+    .doc-card:hover svg { opacity: .9; }
+    .doc-card .doc-num {
+      font-family: var(--font-display);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .doc-card .doc-title {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .doc-card .doc-desc {
+      font-size: .9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .landing-footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-family: var(--font-accent);
+      color: rgba(232,224,208,.2);
+      font-size: .85rem;
+    }
+    .particles {
+      position: fixed; inset: 0; pointer-events: none; z-index: -1;
+      overflow: hidden;
+    }
+    .particles span {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: var(--gold);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particle 6s linear infinite;
+    }
+    @keyframes particle {
+      0% { opacity: 0; transform: translateY(100vh) scale(0); }
+      10% { opacity: .6; }
+      90% { opacity: .6; }
+      100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+    }
+    .particles span:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 8s; }
+    .particles span:nth-child(2) { left: 25%; animation-delay: 1.5s; animation-duration: 7s; }
+    .particles span:nth-child(3) { left: 40%; animation-delay: 3s; animation-duration: 9s; }
+    .particles span:nth-child(4) { left: 55%; animation-delay: .5s; animation-duration: 6s; }
+    .particles span:nth-child(5) { left: 70%; animation-delay: 2s; animation-duration: 8s; }
+    .particles span:nth-child(6) { left: 85%; animation-delay: 4s; animation-duration: 7s; }
+    .particles span:nth-child(7) { left: 50%; animation-delay: 5s; animation-duration: 10s; }
+    .particles span:nth-child(8) { left: 15%; animation-delay: 2.5s; animation-duration: 9s; }
+  </style>
+</head>
+<body class="theme-dark">
+
+<div class="particles">
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<main class="hero-landing">
+
+  <!-- Skull SVG -->
+  <svg class="hero-skull" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 8C28 8 14 24 14 44c0 12 5 22 14 28v10c0 2 2 4 4 4h6v-6h4v6h8v-6h4v6h8v-6h4v6h6c2 0 4-2 4-4V72c9-6 14-16 14-28C86 24 72 8 50 8z" fill="var(--gold)" opacity=".9"/>
+    <circle cx="36" cy="42" r="9" fill="var(--dark-bg)"/>
+    <circle cx="64" cy="42" r="9" fill="var(--dark-bg)"/>
+    <path d="M44 60l3-5h6l3 5-3 5h-6l-3-5z" fill="var(--dark-bg)"/>
+  </svg>
+
+  <h1 class="hero-title">O Baú Amaldiçoado</h1>
+  <p class="hero-sub">A Relíquia das Sombras</p>
+  <span class="ornament"></span>
+  <p class="hero-tagline">"Há segredos que a floresta guarda há séculos. Há maldições que só os mais corajosos ousam despertar."</p>
+
+  <nav class="doc-grid">
+
+    <a href="manual-do-chefe.html" class="doc-card">
+      <svg viewBox="0 0 48 48" fill="var(--gold)">
+        <path d="M8 6h24c1.1 0 2 .9 2 2v28l-8-4-8 4V8c0-1.1.9-2 2-2zM36 6h4c1.1 0 2 .9 2 2v32c0 1.1-.9 2-2 2H12c-1.1 0-2-.9-2-2v-2h24c1.1 0 2-.9 2-2V6z"/>
+      </svg>
+      <span class="doc-num">Documento I</span>
+      <span class="doc-title">Manual do Chefe</span>
+      <span class="doc-desc">Guia de preparação, lore, checklist e enigma explicado</span>
+    </a>
+
+    <a href="manual-da-patrulha.html" class="doc-card">
+      <svg viewBox="0 0 48 48" fill="var(--gold)">
+        <path d="M24 4L6 14v12c0 11 7.7 21.3 18 24 10.3-2.7 18-13 18-24V14L24 4zm0 6l14 8v10c0 8.8-6 17-14 19.5C16 45 10 36.8 10 28V18l14-8z"/>
+        <path d="M24 14l-8 4.5v7c0 5.3 3.3 10.2 8 12 4.7-1.8 8-6.7 8-12v-7L24 14z" opacity=".4"/>
+      </svg>
+      <span class="doc-num">Documento II</span>
+      <span class="doc-title">Manual da Patrulha</span>
+      <span class="doc-desc">Regras do jogo escritas para os jovens escoteiros</span>
+    </a>
+
+    <a href="livro-das-maldicoes.html" class="doc-card">
+      <svg viewBox="0 0 48 48" fill="var(--gold)">
+        <path d="M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm0 4c2.5 0 4.5 4 4.5 7s-2 5-4.5 5-4.5-2-4.5-5 2-7 4.5-7zM16 20c2 0 3.5 2.5 3.5 4.5S18 28 16 28s-3.5-1-3.5-3.5S14 20 16 20zm16 0c2 0 3.5 2.5 3.5 4.5S34 28 32 28s-3.5-1-3.5-3.5S30 20 32 20zM15 33c2-3 5.2-5 9-5s7 2 9 5c-2 3-5.2 5-9 5s-7-2-9-5z"/>
+      </svg>
+      <span class="doc-num">Documento III</span>
+      <span class="doc-title">Livro das Maldições</span>
+      <span class="doc-desc">Os 40 cartões completos com maldições e fragmentos do enigma</span>
+    </a>
+
+    <a href="modelos-impressao.html" class="doc-card">
+      <svg viewBox="0 0 48 48" fill="var(--gold)">
+        <path d="M38 16H10c-2.2 0-4 1.8-4 4v12h8v8h20v-8h8V20c0-2.2-1.8-4-4-4zm-4 20H14v-8h20v8zm4-14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM34 8H14v8h20V8z"/>
+      </svg>
+      <span class="doc-num">Documento IV</span>
+      <span class="doc-title">Modelos de Impressão</span>
+      <span class="doc-desc">Templates prontos para imprimir cartões e pergaminho</span>
+    </a>
+
+  </nav>
+</main>
+
+<footer class="landing-footer">
+  Tropa Sênior — Sempre Alerta!
+</footer>
+
+</body>
+</html>

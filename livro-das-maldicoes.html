@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O Livro das Maldições — O Baú Amaldiçoado</title>
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+    /* ---- Ambient Background ---- */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(201,168,76,.07) 0%, transparent 50%),
+        radial-gradient(circle at 10% 90%, rgba(139,26,26,.06) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(108,52,131,.05) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ---- Hero ---- */
+    .grimoire-icon {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 1.5rem;
+      opacity: .25;
+      animation: flicker 5s ease-in-out infinite;
+    }
+    .hero-intro {
+      max-width: 640px;
+      margin: 1rem auto 0;
+      font-family: var(--font-accent);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ---- Category Legend ---- */
+    .category-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .75rem;
+      padding: 1.25rem 1.5rem;
+      margin: 0 auto 1rem;
+      max-width: 960px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid var(--dark-border);
+      border-radius: var(--radius-md);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: var(--font-accent);
+      font-size: .8rem;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .legend-item svg { width: 14px; height: 14px; }
+
+    /* ---- Filter Buttons ---- */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .5rem;
+      padding: 1rem 1.5rem;
+      margin: 0 auto 2rem;
+      max-width: 960px;
+    }
+    .filter-btn {
+      font-family: var(--font-accent);
+      font-size: .8rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: .4rem 1rem;
+      border: 1px solid var(--dark-border);
+      border-radius: var(--radius-pill);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .3s;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      color: var(--gold);
+      border-color: var(--gold);
+      background: rgba(201,168,76,.08);
+    }
+    .filter-btn[data-cat="communication"].active { color: var(--cat-communication); border-color: var(--cat-communication); background: var(--cat-communication-bg); }
+    .filter-btn[data-cat="movement"].active { color: var(--cat-movement); border-color: var(--cat-movement); background: var(--cat-movement-bg); }
+    .filter-btn[data-cat="sensory"].active { color: var(--cat-sensory); border-color: var(--cat-sensory); background: var(--cat-sensory-bg); }
+    .filter-btn[data-cat="physical"].active { color: var(--cat-physical); border-color: var(--cat-physical); background: var(--cat-physical-bg); }
+    .filter-btn[data-cat="interaction"].active { color: var(--cat-interaction); border-color: var(--cat-interaction); background: var(--cat-interaction-bg); }
+    .filter-btn[data-cat="collective"].active { color: var(--cat-collective); border-color: var(--cat-collective); background: var(--cat-collective-bg); }
+
+    .curse-card.hidden-card { display: none; }
+
+    /* ---- Card Count Badge ---- */
+    .card-count {
+      text-align: center;
+      font-family: var(--font-accent);
+      font-size: .85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .card-count strong { color: var(--gold); }
+
+    /* ---- Enigma glow animation ---- */
+    .curse-card.enigma { animation: glowPulse 4s ease-in-out infinite; }
+
+    /* ---- Back-to-top ---- */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--dark-card);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 1.2rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 99;
+      transition: opacity .3s, transform .3s;
+      box-shadow: 0 4px 20px rgba(0,0,0,.5);
+    }
+    .back-to-top:hover { transform: scale(1.1); }
+    .back-to-top.visible { display: flex; }
+
+    @media print {
+      .back-to-top, .filter-bar, .category-legend { display: none !important; }
+      .page-hero { page-break-after: always; break-after: page; }
+      .cards-grid { display: block; gap: 0; }
+      body { background: white !important; }
+      .curse-card { background: white !important; color: #222 !important; }
+      .curse-card .card-number { color: #bbb !important; }
+      .curse-card .duration { background: #f5f5f5 !important; border-color: #ccc !important; color: #555 !important; }
+    }
+    @media (max-width: 600px) {
+      .category-legend { gap: .5rem; padding: 1rem; }
+      .legend-item { font-size: .7rem; }
+      .filter-btn { font-size: .7rem; padding: .3rem .75rem; }
+    }
+  </style>
+</head>
+<body class="theme-dark">
+
+<!-- ========== SVG Sprites ========== -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="ico-communication" viewBox="0 0 20 20">
+    <path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H8l-4 4v-4H4a2 2 0 01-2-2V4z"/>
+  </symbol>
+  <symbol id="ico-movement" viewBox="0 0 20 20">
+    <path d="M13 3a2 2 0 11-4 0 2 2 0 014 0zM7.5 7l-2 5.5h3L10 18h2l1.5-5.5h3L14.5 7h-7z"/>
+  </symbol>
+  <symbol id="ico-sensory" viewBox="0 0 20 20">
+    <path d="M10 4C4.5 4 1 10 1 10s3.5 6 9 6 9-6 9-6-3.5-6-9-6zm0 10a4 4 0 110-8 4 4 0 010 8z"/>
+    <circle cx="10" cy="10" r="2"/>
+  </symbol>
+  <symbol id="ico-physical" viewBox="0 0 20 20">
+    <path d="M4 7a3 3 0 016 0 3 3 0 016 0c0 2.5-3 5-3 5h-6S4 9.5 4 7z"/>
+    <path d="M4 13a3 3 0 016 0 3 3 0 016 0c0 2.5-3 5-3 5h-6S4 15.5 4 13z"/>
+  </symbol>
+  <symbol id="ico-interaction" viewBox="0 0 20 20">
+    <path d="M10 2C6.7 2 4 4.2 4 7c0 1.5.7 3 2 4-.5 1-1.5 2.5-1.5 2.5s3-.5 4.2-1.2c.4 0 .8.1 1.3.1 3.3 0 6-2.2 6-5s-2.7-5.4-6-5.4zM8 8a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm4 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+    <path d="M17 11c0 2-1.8 3.7-4 4.3.4.6.7 1 .7 1s1.5-.3 2.3-.7c.8.2 2 .4 2 .4s-.5-1-1-1.5c.6-.7 1-1.5 1-2.5 0-1.5-1-2.7-2.5-3.3.3.7.5 1.5.5 2.3z" opacity=".5"/>
+  </symbol>
+  <symbol id="ico-collective" viewBox="0 0 20 20">
+    <circle cx="7" cy="6" r="2.5"/>
+    <circle cx="13" cy="6" r="2.5"/>
+    <path d="M3 15c0-2.8 1.8-4 4-4s4 1.2 4 4H3zM9 15c0-2.8 1.8-4 4-4s4 1.2 4 4H9z"/>
+    <circle cx="10" cy="3" r="1.5" opacity=".5"/>
+    <path d="M6 15c0-2.2 1.3-3.3 3-3.8-.3-.1-.6-.2-1-.2-2.2 0-4 1.2-4 4h2z" opacity=".5"/>
+  </symbol>
+  <symbol id="ico-star" viewBox="0 0 20 20">
+    <path d="M10 1l2.5 6.5H19l-5.3 4 2 6.5L10 14l-5.7 4 2-6.5L1 7.5h6.5z"/>
+  </symbol>
+  <symbol id="ico-moon" viewBox="0 0 20 20">
+    <path d="M17.3 13.3A8 8 0 016.7 2.7 8 8 0 1017.3 13.3z"/>
+  </symbol>
+</svg>
+
+<!-- ========== Navigation ========== -->
+<nav class="top-nav no-print flex-between">
+  <span class="nav-brand">O Baú Amaldiçoado</span>
+  <ul class="nav-links">
+    <li><a href="index.html">Início</a></li>
+    <li><a href="manual-do-chefe.html">Manual do Chefe</a></li>
+    <li><a href="manual-da-patrulha.html">Manual da Patrulha</a></li>
+    <li><a href="livro-das-maldicoes.html" style="opacity:1;color:var(--gold)">Maldições</a></li>
+    <li><a href="modelos-impressao.html">Impressão</a></li>
+  </ul>
+</nav>
+
+<!-- ========== Page Hero ========== -->
+<header class="page-hero">
+  <svg class="grimoire-icon" viewBox="0 0 100 100" fill="var(--gold)">
+    <path d="M15 10v70c0 5 5 10 10 10h50c5 0 10-5 10-10V10c0-5-5-8-10-8H25c-5 0-10 3-10 8z" opacity=".2"/>
+    <path d="M20 8v72c0 3.3 2.7 6 6 6h48c3.3 0 6-2.7 6-6V8c0-3.3-2.7-6-6-6H26c-3.3 0-6 2.7-6 6z" opacity=".3"/>
+    <rect x="28" y="14" width="44" height="2" rx="1" opacity=".5"/>
+    <rect x="34" y="20" width="32" height="1.5" rx=".75" opacity=".3"/>
+    <circle cx="50" cy="40" r="12" opacity=".2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+    <path d="M50 32l2.4 5 5.6.8-4 3.9 1 5.5L50 44.5l-5 2.7 1-5.5-4-3.9 5.6-.8z" opacity=".5"/>
+    <rect x="34" y="58" width="32" height="1.5" rx=".75" opacity=".3"/>
+    <rect x="30" y="63" width="40" height="1.5" rx=".75" opacity=".2"/>
+    <rect x="36" y="68" width="28" height="1.5" rx=".75" opacity=".2"/>
+    <path d="M20 8h-2c-2.2 0-4 1.8-4 4v68c0 4.4 3.6 8 8 8h4c-3.3 0-6-2.7-6-6V8z" opacity=".5"/>
+  </svg>
+
+  <h1 class="display-title">O Livro das Maldições</h1>
+  <p class="subtitle">40 Cartões do Destino</p>
+  <span class="ornament"></span>
+  <p class="hero-intro">
+    Cada cartão selado guarda uma maldição. Cada maldição acumula sobre a anterior.
+    Cinco deles escondem Fragmentos Arcanos — a chave para quebrar a maldição.
+    Abram com cautela. Os espíritos não perdoam os desatentos.
+  </p>
+</header>
+
+<div class="container">
+
+  <!-- ========== Category Legend ========== -->
+  <div class="category-legend">
+    <span class="legend-item" style="color:var(--cat-communication)">
+      <span class="legend-dot" style="background:var(--cat-communication)"></span>
+      <svg><use href="#ico-communication"/></svg> Comunicação <small style="opacity:.5">(12)</small>
+    </span>
+    <span class="legend-item" style="color:var(--cat-movement)">
+      <span class="legend-dot" style="background:var(--cat-movement)"></span>
+      <svg><use href="#ico-movement"/></svg> Locomoção <small style="opacity:.5">(8)</small>
+    </span>
+    <span class="legend-item" style="color:var(--cat-sensory)">
+      <span class="legend-dot" style="background:var(--cat-sensory)"></span>
+      <svg><use href="#ico-sensory"/></svg> Sensorial <small style="opacity:.5">(3)</small>
+    </span>
+    <span class="legend-item" style="color:var(--cat-physical)">
+      <span class="legend-dot" style="background:var(--cat-physical)"></span>
+      <svg><use href="#ico-physical"/></svg> Física <small style="opacity:.5">(3)</small>
+    </span>
+    <span class="legend-item" style="color:var(--cat-interaction)">
+      <span class="legend-dot" style="background:var(--cat-interaction)"></span>
+      <svg><use href="#ico-interaction"/></svg> Interação <small style="opacity:.5">(7)</small>
+    </span>
+    <span class="legend-item" style="color:var(--cat-collective)">
+      <span class="legend-dot" style="background:var(--cat-collective)"></span>
+      <svg><use href="#ico-collective"/></svg> Coletiva <small style="opacity:.5">(7)</small>
+    </span>
+  </div>
+
+  <!-- ========== Filters ========== -->
+  <div class="filter-bar no-print">
+    <button class="filter-btn active" data-cat="all">Todas</button>
+    <button class="filter-btn" data-cat="communication">Comunicação</button>
+    <button class="filter-btn" data-cat="movement">Locomoção</button>
+    <button class="filter-btn" data-cat="sensory">Sensorial</button>
+    <button class="filter-btn" data-cat="physical">Física</button>
+    <button class="filter-btn" data-cat="interaction">Interação</button>
+    <button class="filter-btn" data-cat="collective">Coletiva</button>
+    <button class="filter-btn" data-cat="enigma">✦ Enigma</button>
+  </div>
+
+  <p class="card-count" id="cardCount">Exibindo <strong>40</strong> de 40 cartões</p>
+
+  <!-- ========== Cards Grid ========== -->
+  <div class="cards-grid" id="cardsGrid">
+
+    <!-- ====== CARD 1 ====== -->
+    <article class="curse-card cat-communication" id="card-1">
+      <div class="card-top">
+        <span class="card-number">1</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"A Língua Proibida"</h3>
+      <p class="curse-desc">A letra "S" foi banida da sua existência. Você não pode pronunciar nenhuma palavra que contenha a letra S. Se precisar dizer algo com S, encontre um sinônimo ou descreva de outra forma. Cada vez que um S escapar da sua boca, cubra-a com as duas mãos e permaneça em silêncio por 10 segundos.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 2 ====== -->
+    <article class="curse-card cat-movement" id="card-2">
+      <div class="card-top">
+        <span class="card-number">2</span>
+        <span class="card-badge"><svg><use href="#ico-movement"/></svg> Locomoção</span>
+      </div>
+      <h3 class="curse-name">"O Caranguejo das Sombras"</h3>
+      <p class="curse-desc">Os espíritos enfeitiçaram seus pés. A partir de agora, você só pode se deslocar andando DE LADO, como um caranguejo. Nada de caminhar para frente ou para trás — apenas movimentos laterais.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 3 ====== -->
+    <article class="curse-card cat-communication" id="card-3">
+      <div class="card-top">
+        <span class="card-number">3</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"O Eco Maldito"</h3>
+      <p class="curse-desc">O espírito do Eco se apossou da sua voz. Sempre que qualquer membro da patrulha terminar uma frase, você deve repetir a ÚLTIMA PALAVRA dela imediatamente, como um eco involuntário.</p>
+      <p class="curse-example">Se alguém disser "Vamos abrir o próximo cartão", você deve dizer "...cartão!"</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 4 ====== -->
+    <article class="curse-card cat-interaction" id="card-4">
+      <div class="card-top">
+        <span class="card-number">4</span>
+        <span class="card-badge"><svg><use href="#ico-interaction"/></svg> Interação</span>
+      </div>
+      <h3 class="curse-name">"O Servo do Baú"</h3>
+      <p class="curse-desc">Você agora serve as forças sombrias que habitam o baú. Sempre que QUALQUER pessoa da patrulha disser seu nome, você deve imediatamente fazer uma reverência exagerada — curvando-se até a cintura — e proclamar: "Às suas ordens, mestre."</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 5 ====== -->
+    <article class="curse-card cat-physical" id="card-5">
+      <div class="card-top">
+        <span class="card-number">5</span>
+        <span class="card-badge"><svg><use href="#ico-physical"/></svg> Física</span>
+      </div>
+      <h3 class="curse-name">"A Mão Fantasma"</h3>
+      <p class="curse-desc">Sua mão dominante foi amaldiçoada e perdeu toda a força. A partir de agora, você só pode usar sua mão NÃO-DOMINANTE para tudo: carregar objetos, apontar, gesticular, abrir envelopes. Sua mão dominante deve permanecer fechada em punho ou escondida atrás das costas.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 6 ====== -->
+    <article class="curse-card cat-communication" id="card-6">
+      <div class="card-top">
+        <span class="card-number">6</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"O Bardo das Trevas"</h3>
+      <p class="curse-desc">O espírito de um bardo medieval completamente insano te tocou. TUDO que você disser, sem exceção, deve ser CANTADO — como uma ópera dramática, um samba, uma música de ninar, o estilo é livre, mas tem que ser cantado. Se falar normalmente por acidente, gire 3 vezes em torno de si mesmo como pedido de perdão aos espíritos.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 7 — ENIGMA I ====== -->
+    <article class="curse-card cat-physical enigma" id="card-7">
+      <div class="card-top">
+        <span class="card-number">7</span>
+        <span class="card-badge"><svg><use href="#ico-physical"/></svg> Física</span>
+      </div>
+      <h3 class="curse-name">"As Correntes Invisíveis"</h3>
+      <p class="curse-desc">Uma corrente espiritual te conecta a outra alma. Escolha ou sorteie um membro da patrulha: vocês dois devem permanecer fisicamente conectados pelo pulso usando barbante ou fita. Se não houver material, mantenham contato permanente pelo dedo mindinho. Se a conexão for rompida, ambos devem gritar "AI, A CORRENTE!" dramaticamente até se reconectarem.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+      <div class="enigma-fragment">
+        <div class="enigma-label"><svg style="width:16px;height:16px;fill:var(--gold)"><use href="#ico-star"/></svg> Fragmento Arcano I</div>
+        <p class="enigma-verse">"Moldura de pedra abraça águas dormentes..."</p>
+        <p class="enigma-code">Posição <strong>1</strong> do código: <span class="rune">☽</span></p>
+        <p class="enigma-note">(Anote este símbolo e sua posição na Folha de Registro)</p>
+      </div>
+    </article>
+
+    <!-- ====== CARD 8 ====== -->
+    <article class="curse-card cat-communication" id="card-8">
+      <div class="card-top">
+        <span class="card-number">8</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"O Sussurro dos Mortos"</h3>
+      <p class="curse-desc">Os espíritos roubaram o volume da sua voz. A partir de agora, você só pode falar SUSSURRANDO. Nenhuma palavra em volume normal ou alto, jamais. Se precisar chamar a atenção de alguém distante, bata palmas ou estale os dedos — mas nunca levante a voz.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 9 ====== -->
+    <article class="curse-card cat-interaction" id="card-9">
+      <div class="card-top">
+        <span class="card-number">9</span>
+        <span class="card-badge"><svg><use href="#ico-interaction"/></svg> Interação</span>
+      </div>
+      <h3 class="curse-name">"A Valsa Macabra"</h3>
+      <p class="curse-desc">O espírito de um dançarino fantasmagórico te possui periodicamente. A cada 2 minutos (a patrulha deve cronometrar ou estimar), você deve PARAR o que estiver fazendo, estender os braços como se segurasse um par invisível, e executar 3 passos de valsa completos (1-2-3, 1-2-3, 1-2-3). Só então pode continuar suas atividades.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 10 ====== -->
+    <article class="curse-card cat-sensory" id="card-10">
+      <div class="card-top">
+        <span class="card-number">10</span>
+        <span class="card-badge"><svg><use href="#ico-sensory"/></svg> Sensorial</span>
+      </div>
+      <h3 class="curse-name">"O Olho do Corvo"</h3>
+      <p class="curse-desc">Um dos seus olhos agora pertence ao corvo das sombras. FECHE ou cubra um dos seus olhos (com a mão ou lenço). Você pode trocar de olho a cada 5 minutos, mas NUNCA pode usar os dois olhos ao mesmo tempo.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 11 ====== -->
+    <article class="curse-card cat-interaction" id="card-11">
+      <div class="card-top">
+        <span class="card-number">11</span>
+        <span class="card-badge"><svg><use href="#ico-interaction"/></svg> Interação</span>
+      </div>
+      <h3 class="curse-name">"A Estátua Amaldiçoada"</h3>
+      <p class="curse-desc">Os espíritos da floresta controlam seu corpo. Sempre que ouvir um som vindo da natureza — um pássaro cantando, o vento soprando forte, folhas estalando — você deve CONGELAR imediatamente, totalmente imóvel como uma estátua, por 10 segundos. Nem os olhos podem se mover. Conte mentalmente.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 12 ====== -->
+    <article class="curse-card cat-interaction" id="card-12">
+      <div class="card-top">
+        <span class="card-number">12</span>
+        <span class="card-badge"><svg><use href="#ico-interaction"/></svg> Interação</span>
+      </div>
+      <h3 class="curse-name">"O Nome Devorado"</h3>
+      <p class="curse-desc">Os espíritos devoraram seu nome. Ele não existe mais. A patrulha deve NESTE INSTANTE inventar um novo nome místico para você. Sugestões: "Sombra Errante", "Lua Negra", "Trovão Silencioso", "Chama Perdida" — ou criem o que quiserem. A partir de agora, TODOS devem usar apenas o novo nome. Cada vez que alguém usar o nome verdadeiro, a patrulha inteira bate palmas 3 vezes para "exorcizar" o deslize.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 13 ====== -->
+    <article class="curse-card cat-movement" id="card-13">
+      <div class="card-top">
+        <span class="card-number">13</span>
+        <span class="card-badge"><svg><use href="#ico-movement"/></svg> Locomoção</span>
+      </div>
+      <h3 class="curse-name">"A Âncora Espiritual"</h3>
+      <p class="curse-desc">Uma âncora invisível pesa sobre seus pés. Você deve andar ARRASTANDO os pés pelo chão, sem levantá-los em nenhum momento. Seus pés não podem perder o contato com o solo. Deslize, não caminhe.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 14 ====== -->
+    <article class="curse-card cat-communication" id="card-14">
+      <div class="card-top">
+        <span class="card-number">14</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"O Narrador Sombrio"</h3>
+      <p class="curse-desc">O espírito de um contador de histórias épicas se apossou da sua mente. TUDO que você fizer, cada ação, cada gesto, deve ser narrado por você mesmo em TERCEIRA PESSOA e tom dramático.</p>
+      <p class="curse-example">"O destemido escoteiro estende sua mão trêmula rumo ao envelope misterioso... Seu coração dispara enquanto o papel rasga sob seus dedos..."</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 15 — ENIGMA II ====== -->
+    <article class="curse-card cat-communication enigma" id="card-15">
+      <div class="card-top">
+        <span class="card-number">15</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"O Ventríloquo das Sombras"</h3>
+      <p class="curse-desc">Um feitiço selou sua boca. A partir de agora, você NÃO PODE ABRIR A BOCA para falar. Toda comunicação verbal deve ser feita com os lábios FECHADOS, estilo ventríloquo. Pode usar gestos e mímica para complementar, mas a boca permanece fechada.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+      <div class="enigma-fragment">
+        <div class="enigma-label"><svg style="width:16px;height:16px;fill:var(--gold)"><use href="#ico-star"/></svg> Fragmento Arcano II</div>
+        <p class="enigma-verse">"...Onde os bravos mergulham quando o sol é inclemente..."</p>
+        <p class="enigma-code">Posições <strong>2</strong> e <strong>5</strong> do código: <span class="rune">⚔</span> <em style="font-size:.85rem;color:var(--text-muted)">(o mesmo símbolo ocupa ambas as posições)</em></p>
+        <p class="enigma-note">(Anote este símbolo e suas posições na Folha de Registro)</p>
+      </div>
+    </article>
+
+    <!-- ====== CARD 16 ====== -->
+    <article class="curse-card cat-interaction" id="card-16">
+      <div class="card-top">
+        <span class="card-number">16</span>
+        <span class="card-badge"><svg><use href="#ico-interaction"/></svg> Interação</span>
+      </div>
+      <h3 class="curse-name">"O Oráculo Impostor"</h3>
+      <p class="curse-desc">Os espíritos fizeram você acreditar que é um oráculo supremo. Antes de dar QUALQUER opinião, sugestão ou resposta, você deve obrigatoriamente: fechar os olhos, estender as mãos para o céu, respirar fundo e proclamar solenemente: "Os espíritos me revelam que..." — e só então dizer o que realmente queria dizer.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 17 ====== -->
+    <article class="curse-card cat-collective" id="card-17">
+      <div class="card-top">
+        <span class="card-number">17</span>
+        <span class="card-badge"><svg><use href="#ico-collective"/></svg> Coletiva</span>
+      </div>
+      <h3 class="curse-name">"O Véu das Sombras" — Maldição Coletiva</h3>
+      <p class="curse-desc">As trevas descem sobre todos! TODA a patrulha deve FECHAR UM DOS OLHOS durante os próximos 3 minutos. Cada um escolhe qual olho fechar, mas deve mantê-lo fechado durante todo o período. A patrulha pode se mover e agir normalmente — exceto pela visão reduzida.</p>
+      <span class="duration">Duração: 3 minutos</span>
+    </article>
+
+    <!-- ====== CARD 18 ====== -->
+    <article class="curse-card cat-communication" id="card-18">
+      <div class="card-top">
+        <span class="card-number">18</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"A Gargalhada do Vilão"</h3>
+      <p class="curse-desc">O riso de um vilão ancestral contaminou sua alma. TODA frase que você disser deve terminar com uma risada maligna e teatral. Escolha seu estilo: "MUAHAHAHÁ!" ou "HEHEHE..." ou "BUÁHÁHÁ!" — mas a risada é obrigatória. Se esquecer, repita a frase inteira com a risada incluída.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 19 ====== -->
+    <article class="curse-card cat-sensory" id="card-19">
+      <div class="card-top">
+        <span class="card-number">19</span>
+        <span class="card-badge"><svg><use href="#ico-sensory"/></svg> Sensorial</span>
+      </div>
+      <h3 class="curse-name">"A Escuridão Eterna"</h3>
+      <p class="curse-desc">As trevas engoliram seus olhos. Coloque uma venda — você está COMPLETAMENTE CEGO. Deve ser guiado por membros da patrulha para se mover. Você pode remover a venda por APENAS 5 segundos a cada 10 minutos para se reorientar — depois, a escuridão retorna.</p>
+      <span class="duration">Duração: Resto do jogo (com breves intervalos de visão a cada 10 minutos)</span>
+    </article>
+
+    <!-- ====== CARD 20 ====== -->
+    <article class="curse-card cat-movement" id="card-20">
+      <div class="card-top">
+        <span class="card-number">20</span>
+        <span class="card-badge"><svg><use href="#ico-movement"/></svg> Locomoção</span>
+      </div>
+      <h3 class="curse-name">"O Espelho Reverso"</h3>
+      <p class="curse-desc">A maldição te virou ao contrário. Você deve andar EXCLUSIVAMENTE DE COSTAS. Pode olhar por cima do ombro para se orientar, mas seus pés sempre se movem para trás. Se houver terreno perigoso, um membro da patrulha deve guiá-lo verbalmente.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 21 ====== -->
+    <article class="curse-card cat-collective" id="card-21">
+      <div class="card-top">
+        <span class="card-number">21</span>
+        <span class="card-badge"><svg><use href="#ico-collective"/></svg> Coletiva</span>
+      </div>
+      <h3 class="curse-name">"A Procissão dos Condenados" — Maldição Coletiva</h3>
+      <p class="curse-desc">Os espíritos exigem ordem e disciplina dos condenados. A partir de agora, por 5 minutos, TODA a patrulha deve se deslocar em FILA INDIANA rigorosa. O último da fila está sob "silêncio espiritual" e não pode falar. A ordem da fila só pode ser alterada se todos pararem e contarem juntos de 1 até o número de membros da patrulha.</p>
+      <span class="duration">Duração: 5 minutos</span>
+    </article>
+
+    <!-- ====== CARD 22 ====== -->
+    <article class="curse-card cat-communication" id="card-22">
+      <div class="card-top">
+        <span class="card-number">22</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"O Poeta Atormentado"</h3>
+      <p class="curse-desc">O espírito de um poeta louco e atormentado dominou sua fala. TUDO que você disser, a partir de agora, deve RIMAR. Cada frase deve conter pelo menos uma rima. Se não conseguir rimar, fique em silêncio absoluto por 30 segundos (conte mentalmente) antes de tentar novamente. Rimas forçadas, absurdas e ridículas são perfeitamente aceitas.</p>
+      <p class="curse-example">"Vamos abrir este cartão que nos causa arrepiação!"</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 23 — ENIGMA III ====== -->
+    <article class="curse-card cat-collective enigma" id="card-23">
+      <div class="card-top">
+        <span class="card-number">23</span>
+        <span class="card-badge"><svg><use href="#ico-collective"/></svg> Coletiva</span>
+      </div>
+      <h3 class="curse-name">"A Troca de Almas" — Maldição Coletiva</h3>
+      <p class="curse-desc">Os espíritos embaralharam as almas da patrulha! Dois membros (decidam por par ou ímpar agora mesmo) devem TROCAR DE IDENTIDADE pelo resto do jogo. Cada um passa a responder pelo nome do outro, tenta imitar seus gestos e maneirismos, e todos os demais devem tratá-los pelo nome trocado. Se alguém errar, toda a patrulha gira uma vez em torno de si.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+      <div class="enigma-fragment">
+        <div class="enigma-label"><svg style="width:16px;height:16px;fill:var(--gold)"><use href="#ico-star"/></svg> Fragmento Arcano III</div>
+        <p class="enigma-verse">"...Nem rio, nem mar — mãos humanas a fizeram..."</p>
+        <p class="enigma-code">Posição <strong>3</strong> do código: <span class="rune">⚡</span></p>
+        <p class="enigma-note">(Anote este símbolo e sua posição na Folha de Registro)</p>
+      </div>
+    </article>
+
+    <!-- ====== CARD 24 ====== -->
+    <article class="curse-card cat-movement" id="card-24">
+      <div class="card-top">
+        <span class="card-number">24</span>
+        <span class="card-badge"><svg><use href="#ico-movement"/></svg> Locomoção</span>
+      </div>
+      <h3 class="curse-name">"Os Pés de Chumbo"</h3>
+      <p class="curse-desc">Uma gravidade tripla recai sobre você. Deve andar em CÂMERA LENTA — cada passo exageradamente lento e pesado, como se estivesse se movendo debaixo d'água ou na superfície da lua. Movimentos rápidos estão estritamente proibidos.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 25 ====== -->
+    <article class="curse-card cat-communication" id="card-25">
+      <div class="card-top">
+        <span class="card-number">25</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"A Amnésia das Coisas"</h3>
+      <p class="curse-desc">Sua memória para nomes de objetos foi completamente apagada. Você NÃO PODE mais nomear nenhum objeto — deve DESCREVÊ-LO de forma criativa.</p>
+      <p class="curse-example">"envelope" = "aquela coisa retangular que guarda segredos de papel"; "árvore" = "o gigante de madeira com cabelo verde"; "cartão" = "o pedaço achatado com escritas misteriosas"</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 26 ====== -->
+    <article class="curse-card cat-collective" id="card-26">
+      <div class="card-top">
+        <span class="card-number">26</span>
+        <span class="card-badge"><svg><use href="#ico-collective"/></svg> Coletiva</span>
+      </div>
+      <h3 class="curse-name">"O Silêncio Absoluto" — Maldição Coletiva</h3>
+      <p class="curse-desc">Os espíritos exigem silêncio como oferenda. TODA a patrulha entra em silêncio TOTAL por 2 minutos. Qualquer comunicação deve ser feita EXCLUSIVAMENTE por gestos, mímicas, expressões faciais ou desenhos no chão. Se QUALQUER membro falar, os 2 minutos RECOMEÇAM do zero.</p>
+      <span class="duration">Duração: 2 minutos (reinicia se alguém falar)</span>
+    </article>
+
+    <!-- ====== CARD 27 ====== -->
+    <article class="curse-card cat-interaction" id="card-27">
+      <div class="card-top">
+        <span class="card-number">27</span>
+        <span class="card-badge"><svg><use href="#ico-interaction"/></svg> Interação</span>
+      </div>
+      <h3 class="curse-name">"A Sombra Grudenta"</h3>
+      <p class="curse-desc">Você se transformou na sombra de outro ser. Sorteie ou escolha um membro da patrulha: você deve IMITAR TODOS os movimentos dele, posicionando-se sempre logo atrás ou ao lado. Se ele pular, você pula. Se ele coçar a cabeça, você coça a cabeça. Se ele parar, você para. A imitação deve ser IMEDIATA e FIEL.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 28 ====== -->
+    <article class="curse-card cat-communication" id="card-28">
+      <div class="card-top">
+        <span class="card-number">28</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"O Diplomata das Trevas"</h3>
+      <p class="curse-desc">Os espíritos exigem protocolo e reverência. Antes de dizer QUALQUER coisa — qualquer coisa mesmo — você deve pedir permissão: <em>"Oh, grandes espíritos das sombras, concedei-me a fala!"</em> — e esperar que outro membro da patrulha responda: <em>"Fale, mortal!"</em>. Sem essa autorização, você permanece em silêncio. A patrulha é encorajada a demorar para dar permissão.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 29 ====== -->
+    <article class="curse-card cat-physical" id="card-29">
+      <div class="card-top">
+        <span class="card-number">29</span>
+        <span class="card-badge"><svg><use href="#ico-physical"/></svg> Física</span>
+      </div>
+      <h3 class="curse-name">"As Mãos Acorrentadas"</h3>
+      <p class="curse-desc">Correntes invisíveis prendem seus pulsos. Amarre seus pulsos juntos com barbante ou fita de tecido (com folga suficiente para mobilidade limitada, mas sem separá-los mais de um palmo). Se não houver material, mantenha os pulsos permanentemente encostados. Você pode usar as mãos, mas elas NUNCA se separam.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 30 ====== -->
+    <article class="curse-card cat-communication" id="card-30">
+      <div class="card-top">
+        <span class="card-number">30</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"O Arauto das Trevas"</h3>
+      <p class="curse-desc">Um espírito sombrio colonizou sua garganta. Toda frase que você pronunciar deve obrigatoriamente COMEÇAR com uma das seguintes aberturas. Varie entre elas:</p>
+      <p class="curse-example">"Quando as sombras se erguem..."<br>"Dos confins do abismo..."<br>"Os mortos me contaram que..."<br>"Na escuridão eu vi..."<br>"Pelo poder da lua negra..."</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 31 — ENIGMA IV ====== -->
+    <article class="curse-card cat-movement enigma" id="card-31">
+      <div class="card-top">
+        <span class="card-number">31</span>
+        <span class="card-badge"><svg><use href="#ico-movement"/></svg> Locomoção</span>
+      </div>
+      <h3 class="curse-name">"O Corcunda de Mestre Coruja"</h3>
+      <p class="curse-desc">O peso da maldição é físico e real. Você deve andar permanentemente CURVADO, com as costas bem arqueadas, como se um fardo invisível e esmagador pesasse sobre seus ombros. Não pode endireitar a coluna em momento algum. Se precisar olhar para cima, incline a cabeça, não as costas.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+      <div class="enigma-fragment">
+        <div class="enigma-label"><svg style="width:16px;height:16px;fill:var(--gold)"><use href="#ico-star"/></svg> Fragmento Arcano IV</div>
+        <p class="enigma-verse">"...À noite a lua dança no espelho que teceram..."</p>
+        <p class="enigma-code">Posição <strong>4</strong> do código: <span class="rune">◆</span></p>
+        <p class="enigma-note">(Anote este símbolo e sua posição na Folha de Registro)</p>
+      </div>
+    </article>
+
+    <!-- ====== CARD 32 ====== -->
+    <article class="curse-card cat-interaction" id="card-32">
+      <div class="card-top">
+        <span class="card-number">32</span>
+        <span class="card-badge"><svg><use href="#ico-interaction"/></svg> Interação</span>
+      </div>
+      <h3 class="curse-name">"O Corvo da Meia-Noite"</h3>
+      <p class="curse-desc">O espírito de um corvo das trevas habita seu peito. A cada 1 minuto (estime ou cronometre), você deve soltar um ALTO e DRAMÁTICO: "CRAAAA! CRAAAA!" — como o grasnar de um corvo sinistro — não importa o que esteja acontecendo. A patrulha é responsável por lembrá-lo caso esqueça.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 33 ====== -->
+    <article class="curse-card cat-movement" id="card-33">
+      <div class="card-top">
+        <span class="card-number">33</span>
+        <span class="card-badge"><svg><use href="#ico-movement"/></svg> Locomoção</span>
+      </div>
+      <h3 class="curse-name">"A Perna Amaldiçoada"</h3>
+      <p class="curse-desc">A maldição atingiu uma de suas pernas, enrijecendo-a completamente. Amarre um lenço ou fita levemente na altura do joelho de uma perna (sem apertar demais!) para simular rigidez e ande MANCANDO. Se não houver material, simplesmente não dobre um dos joelhos ao caminhar.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 34 ====== -->
+    <article class="curse-card cat-communication" id="card-34">
+      <div class="card-top">
+        <span class="card-number">34</span>
+        <span class="card-badge"><svg><use href="#ico-communication"/></svg> Comunicação</span>
+      </div>
+      <h3 class="curse-name">"O Telepata Fracassado"</h3>
+      <p class="curse-desc">Os espíritos te deram o "dom" da telepatia — porém completamente defeituoso. Você acredita piamente que pode ler mentes, mas está sempre errado. Antes de responder QUALQUER pergunta, comentário ou situação, você deve dizer com confiança absoluta: "Eu já sabia que você ia dizer isso!" — mesmo quando claramente não sabia.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 35 ====== -->
+    <article class="curse-card cat-collective" id="card-35">
+      <div class="card-top">
+        <span class="card-number">35</span>
+        <span class="card-badge"><svg><use href="#ico-collective"/></svg> Coletiva</span>
+      </div>
+      <h3 class="curse-name">"A Babel das Trevas" — Maldição Coletiva</h3>
+      <p class="curse-desc">Os espíritos confundiram a língua da patrulha! Toda a patrulha deve AGORA MESMO inventar e adotar 5 palavras completamente novas, com significados específicos, e usá-las no lugar das originais pelo resto do jogo:</p>
+      <p class="curse-example">SIM → (inventem!)<br>NÃO → (inventem!)<br>VAMOS → (inventem!)<br>CUIDADO → (inventem!)<br>OLHEM / VEJAM → (inventem!)</p>
+      <p class="curse-desc" style="margin-top:.5rem">Quem usar a palavra original no lugar da inventada recebe um "SHHH!" coletivo da patrulha.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 36 ====== -->
+    <article class="curse-card cat-sensory" id="card-36">
+      <div class="card-top">
+        <span class="card-number">36</span>
+        <span class="card-badge"><svg><use href="#ico-sensory"/></svg> Sensorial</span>
+      </div>
+      <h3 class="curse-name">"O Vampiro Solar"</h3>
+      <p class="curse-desc">A luz do sol se tornou seu veneno! Sempre que estiver em uma área iluminada diretamente pelo sol, você deve proteger o rosto com as mãos ou um pano e soltar gemidos dramáticos de dor ("Ai! A luz! Ela queima!"). Procure se mover sempre pelas sombras. Se não houver sombra disponível, desloque-se AGACHADO e protegendo os olhos.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 37 ====== -->
+    <article class="curse-card cat-collective" id="card-37">
+      <div class="card-top">
+        <span class="card-number">37</span>
+        <span class="card-badge"><svg><use href="#ico-collective"/></svg> Coletiva</span>
+      </div>
+      <h3 class="curse-name">"O Ritual da Abertura" — Maldição Coletiva</h3>
+      <p class="curse-desc">Os espíritos agora exigem um ritual formal. A partir deste cartão, TODA VEZ que a patrulha for abrir um novo envelope, TODOS devem primeiro:</p>
+      <p class="curse-example">1. Posicionar-se em círculo ao redor do cartão<br>2. Fazer uma reverência coletiva<br>3. Dizer em coro, em voz grave: "Oh, grande maldição, aceitamos nosso destino com honra!"</p>
+      <p class="curse-desc" style="margin-top:.5rem">Só após o ritual o cartão pode ser aberto.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 38 — ENIGMA V ====== -->
+    <article class="curse-card cat-movement enigma" id="card-38">
+      <div class="card-top">
+        <span class="card-number">38</span>
+        <span class="card-badge"><svg><use href="#ico-movement"/></svg> Locomoção</span>
+      </div>
+      <h3 class="curse-name">"O Despertar do Zumbi"</h3>
+      <p class="curse-desc">As trevas finalmente te transformaram em morto-vivo. Enquanto estiver em MOVIMENTO, você deve: andar com os braços estendidos à frente, manter as pernas rígidas, e só pode emitir gemidos: "Uuuuugh... Aaaargh..." — nenhuma palavra articulada. Você SÓ pode falar normalmente quando estiver COMPLETAMENTE PARADO e imóvel.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+      <div class="enigma-fragment">
+        <div class="enigma-label"><svg style="width:16px;height:16px;fill:var(--gold)"><use href="#ico-star"/></svg> Fragmento Arcano V — O Fragmento Final</div>
+        <p class="enigma-verse">"...O tesouro jaz a dez passos de onde a água foi domada."</p>
+        <p class="enigma-code">Posições <strong>6</strong> e <strong>7</strong> do código: <span class="rune">≈</span> e <span class="rune">△</span></p>
+        <p class="enigma-code" style="margin-top:.5rem">A palavra maldita tem <strong>7 letras</strong>.</p>
+        <p class="enigma-code" style="margin-top:.5rem;font-family:var(--font-accent);color:var(--gold-light);font-style:italic">Usem o Pergaminho. Decifrem as runas. Encontrem o tesouro. Antes que a maldição se torne eterna.</p>
+        <p class="enigma-note">(Anote estes símbolos e suas posições na Folha de Registro)</p>
+      </div>
+    </article>
+
+    <!-- ====== CARD 39 ====== -->
+    <article class="curse-card cat-movement" id="card-39">
+      <div class="card-top">
+        <span class="card-number">39</span>
+        <span class="card-badge"><svg><use href="#ico-movement"/></svg> Locomoção</span>
+      </div>
+      <h3 class="curse-name">"O Espírito Animal"</h3>
+      <p class="curse-desc">Um espírito selvagem te possuiu! A patrulha deve AGORA MESMO votar e escolher um animal para você (vale tudo: gato, galinha, macaco, cobra, sapo...). A partir de agora, enquanto se MOVE, você deve se locomover e se comunicar COMO ESSE ANIMAL: se for gato, ande de quatro e mie; se for galinha, bata os braços e cacareje; se for sapo, pule agachado. Quando estiver PARADO, pode falar normalmente.</p>
+      <span class="duration">Duração: Resto do jogo</span>
+    </article>
+
+    <!-- ====== CARD 40 ====== -->
+    <article class="curse-card cat-collective" id="card-40">
+      <div class="card-top">
+        <span class="card-number">40</span>
+        <span class="card-badge"><svg><use href="#ico-collective"/></svg> Coletiva</span>
+      </div>
+      <h3 class="curse-name">"O Coro dos Condenados" — A Maldição Final — Maldição Coletiva</h3>
+      <p class="curse-desc">O ápice da maldição foi atingido. A patrulha inteira está agora completamente submersa nas trevas. TODOS passam a se mover e falar em CÂMERA LENTA — como se o tempo tivesse desacelerado ao redor de vocês. Cada gesto, cada passo, cada palavra deve ser exageradamente lento.</p>
+      <p class="curse-desc" style="margin-top:.5rem">Essa maldição só cessa quando o enigma for decifrado e o tesouro encontrado.</p>
+      <div class="lore-block" style="margin-top:1.5rem">
+        Vocês chegaram ao fim dos cartões. Se os Fragmentos Arcanos foram coletados e o Pergaminho está em suas mãos, o caminho se revela aos dignos. Juntem as runas. Decifrem a palavra. Encontrem o tesouro. Só assim a maldição será quebrada.
+        <br><br>— Mestre Coruja
+      </div>
+      <span class="duration">Duração: Até resolver o enigma</span>
+    </article>
+
+  </div><!-- .cards-grid -->
+
+</div><!-- .container -->
+
+<!-- ========== Footer ========== -->
+<footer class="page-footer">
+  O Baú Amaldiçoado: A Relíquia das Sombras — Tropa Sênior — Sempre Alerta!
+</footer>
+
+<!-- ========== Back to Top ========== -->
+<button class="back-to-top no-print" id="btnTop" aria-label="Voltar ao topo">↑</button>
+
+<script>
+(function() {
+  const grid = document.getElementById('cardsGrid');
+  const cards = grid.querySelectorAll('.curse-card');
+  const btns = document.querySelectorAll('.filter-btn');
+  const countEl = document.getElementById('cardCount');
+  const topBtn = document.getElementById('btnTop');
+
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var cat = btn.getAttribute('data-cat');
+      var shown = 0;
+      cards.forEach(function(card) {
+        if (cat === 'all') {
+          card.classList.remove('hidden-card');
+          shown++;
+        } else if (cat === 'enigma') {
+          if (card.classList.contains('enigma')) {
+            card.classList.remove('hidden-card');
+            shown++;
+          } else {
+            card.classList.add('hidden-card');
+          }
+        } else {
+          if (card.classList.contains('cat-' + cat)) {
+            card.classList.remove('hidden-card');
+            shown++;
+          } else {
+            card.classList.add('hidden-card');
+          }
+        }
+      });
+      countEl.innerHTML = 'Exibindo <strong>' + shown + '</strong> de 40 cartões';
+    });
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 600) {
+      topBtn.classList.add('visible');
+    } else {
+      topBtn.classList.remove('visible');
+    }
+  });
+  topBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+
+</body>
+</html>

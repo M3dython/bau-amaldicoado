@@ -1,0 +1,642 @@
+/* ==============================================
+   O BAÚ AMALDIÇOADO — Design System
+   ============================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;800&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=MedievalSharp&display=swap');
+
+/* ---------- Variables ---------- */
+:root {
+  --dark-bg: #0a0a0f;
+  --dark-surface: #111118;
+  --dark-card: #16161f;
+  --dark-border: #2a2a3e;
+  --dark-border-light: #3a3a50;
+
+  --parch-bg: #f5ead0;
+  --parch-surface: #ede0c8;
+  --parch-card: #faf3e3;
+  --parch-border: #c4a882;
+  --parch-dark: #3d2b1f;
+
+  --gold: #c9a84c;
+  --gold-light: #e8d48b;
+  --gold-dark: #8a6d21;
+  --blood: #8b1a1a;
+  --blood-light: #c0392b;
+  --mystic: #6c3483;
+  --shadow: #1a1a3e;
+  --ember: #e67e22;
+
+  --text-light: #e8e0d0;
+  --text-muted: #8888a0;
+  --text-dark: #2a1a0a;
+  --text-gold: #c9a84c;
+
+  --cat-communication: #9b59b6;
+  --cat-communication-bg: rgba(155,89,182,0.12);
+  --cat-movement: #e67e22;
+  --cat-movement-bg: rgba(230,126,34,0.12);
+  --cat-sensory: #1abc9c;
+  --cat-sensory-bg: rgba(26,188,156,0.12);
+  --cat-physical: #e74c3c;
+  --cat-physical-bg: rgba(231,76,60,0.12);
+  --cat-interaction: #2ecc71;
+  --cat-interaction-bg: rgba(46,204,113,0.12);
+  --cat-collective: #f1c40f;
+  --cat-collective-bg: rgba(241,196,15,0.15);
+
+  --font-display: 'Cinzel Decorative', serif;
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Crimson Pro', serif;
+  --font-accent: 'MedievalSharp', cursive;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 100px;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: var(--font-body); line-height: 1.75; -webkit-font-smoothing: antialiased; }
+img, svg { max-width: 100%; }
+a { color: var(--gold); text-decoration: none; transition: color .3s, opacity .3s; }
+a:hover { color: var(--gold-light); }
+ul, ol { padding-left: 1.5em; }
+
+/* ---------- Typography ---------- */
+h1, h2, h3, h4 { font-family: var(--font-heading); line-height: 1.25; font-weight: 700; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
+h3 { font-size: clamp(1.15rem, 2.5vw, 1.5rem); }
+h4 { font-size: 1.1rem; }
+
+.display-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.accent-text { font-family: var(--font-accent); }
+
+.subtitle {
+  font-family: var(--font-accent);
+  font-size: 1.15rem;
+  opacity: .7;
+  letter-spacing: .04em;
+}
+
+/* ---------- Themes ---------- */
+.theme-dark {
+  background-color: var(--dark-bg);
+  color: var(--text-light);
+}
+.theme-dark h1, .theme-dark h2, .theme-dark h3 { color: var(--gold); }
+
+.theme-parchment {
+  background: var(--parch-bg);
+  color: var(--text-dark);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(160,120,60,.08) 0%, transparent 70%),
+    radial-gradient(ellipse at 80% 20%, rgba(120,80,30,.06) 0%, transparent 60%);
+}
+.theme-parchment h1, .theme-parchment h2, .theme-parchment h3 { color: var(--parch-dark); }
+
+/* ---------- Layout ---------- */
+.container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+.container-wide { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-sm { gap: .5rem; }
+.gap-md { gap: 1rem; }
+.gap-lg { gap: 2rem; }
+
+/* ---------- Page Header ---------- */
+.page-hero {
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center top, rgba(201,168,76,.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+.page-hero .display-title { margin-bottom: .5rem; }
+.page-hero .subtitle { margin-bottom: 1.5rem; }
+
+.ornament {
+  display: block;
+  margin: 1rem auto;
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  position: relative;
+}
+.ornament::before {
+  content: '◆';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: .7rem;
+  color: var(--gold);
+  background: inherit;
+  padding: 0 .5rem;
+}
+.theme-dark .ornament::before { background: var(--dark-bg); }
+.theme-parchment .ornament::before { background: var(--parch-bg); }
+
+/* ---------- Navigation ---------- */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: .75rem 1.5rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,168,76,.2);
+}
+.theme-dark .top-nav { background: rgba(10,10,15,.85); }
+.theme-parchment .top-nav { background: rgba(245,234,208,.9); }
+
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: .85rem;
+  color: var(--gold);
+  letter-spacing: .06em;
+}
+.nav-links { list-style: none; display: flex; gap: 1.5rem; padding: 0; }
+.nav-links a {
+  font-family: var(--font-heading);
+  font-size: .8rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  opacity: .7;
+  transition: opacity .3s;
+}
+.nav-links a:hover { opacity: 1; }
+
+/* ---------- Section ---------- */
+.section { padding: 3rem 0; }
+.section + .section { border-top: 1px solid rgba(201,168,76,.15); }
+.section-title {
+  font-family: var(--font-heading);
+  margin-bottom: 1.5rem;
+  padding-bottom: .75rem;
+  border-bottom: 2px solid var(--gold);
+  display: inline-block;
+}
+
+/* ---------- Cards (Curse Cards) ---------- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+@media (min-width: 768px) {
+  .cards-grid.two-col { grid-template-columns: 1fr 1fr; }
+}
+
+.curse-card {
+  border: 2px solid var(--dark-border);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  background: var(--dark-card);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.curse-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--dark-border);
+}
+.curse-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
+}
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.card-number {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--gold);
+  opacity: .3;
+}
+.card-badge {
+  font-family: var(--font-accent);
+  font-size: .75rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: .25rem .75rem;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+}
+.card-badge svg { width: 14px; height: 14px; fill: currentColor; }
+
+.curse-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: .75rem;
+  letter-spacing: .03em;
+  line-height: 1.4;
+}
+.curse-desc {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  opacity: .9;
+}
+.curse-example {
+  font-style: italic;
+  opacity: .65;
+  font-size: .95rem;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid rgba(255,255,255,.1);
+}
+.duration {
+  display: inline-block;
+  font-family: var(--font-accent);
+  font-size: .8rem;
+  padding: .3rem 1rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  color: var(--text-muted);
+}
+
+/* Category card themes */
+.cat-communication { border-color: var(--cat-communication); }
+.cat-communication::before { background: var(--cat-communication); }
+.cat-communication .curse-name { color: var(--cat-communication); }
+.cat-communication .card-badge { background: var(--cat-communication-bg); color: var(--cat-communication); }
+
+.cat-movement { border-color: var(--cat-movement); }
+.cat-movement::before { background: var(--cat-movement); }
+.cat-movement .curse-name { color: var(--cat-movement); }
+.cat-movement .card-badge { background: var(--cat-movement-bg); color: var(--cat-movement); }
+
+.cat-sensory { border-color: var(--cat-sensory); }
+.cat-sensory::before { background: var(--cat-sensory); }
+.cat-sensory .curse-name { color: var(--cat-sensory); }
+.cat-sensory .card-badge { background: var(--cat-sensory-bg); color: var(--cat-sensory); }
+
+.cat-physical { border-color: var(--cat-physical); }
+.cat-physical::before { background: var(--cat-physical); }
+.cat-physical .curse-name { color: var(--cat-physical); }
+.cat-physical .card-badge { background: var(--cat-physical-bg); color: var(--cat-physical); }
+
+.cat-interaction { border-color: var(--cat-interaction); }
+.cat-interaction::before { background: var(--cat-interaction); }
+.cat-interaction .curse-name { color: var(--cat-interaction); }
+.cat-interaction .card-badge { background: var(--cat-interaction-bg); color: var(--cat-interaction); }
+
+.cat-collective { border-color: var(--cat-collective); }
+.cat-collective::before { background: var(--cat-collective); }
+.cat-collective .curse-name { color: var(--cat-collective); }
+.cat-collective .card-badge { background: var(--cat-collective-bg); color: var(--cat-collective); }
+
+/* Enigma cards */
+.curse-card.enigma {
+  border-color: var(--gold) !important;
+  background: linear-gradient(135deg, var(--dark-card), rgba(201,168,76,.06));
+}
+.curse-card.enigma::before { background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark)) !important; height: 5px; }
+.curse-card.enigma::after {
+  content: '';
+  position: absolute;
+  top: 5px; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at top center, rgba(201,168,76,.08), transparent 60%);
+  pointer-events: none;
+}
+
+.enigma-fragment {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: rgba(201,168,76,.08);
+  border: 1px dashed var(--gold);
+  border-radius: var(--radius-sm);
+  position: relative;
+}
+.enigma-label {
+  font-family: var(--font-display);
+  font-size: .85rem;
+  color: var(--gold);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.enigma-verse {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: var(--gold-light);
+  font-size: 1.05rem;
+  margin-bottom: .75rem;
+}
+.enigma-code {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--text-light);
+}
+.rune {
+  font-size: 1.6rem;
+  color: var(--gold);
+  vertical-align: middle;
+  display: inline-block;
+  text-shadow: 0 0 10px rgba(201,168,76,.5);
+}
+.enigma-note {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin-top: .5rem;
+  font-style: italic;
+}
+
+/* ---------- Checklist ---------- */
+.checklist { list-style: none; padding: 0; }
+.checklist li {
+  padding: .6rem 0 .6rem 2.5rem;
+  position: relative;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.checklist li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: .75rem;
+  width: 18px; height: 18px;
+  border: 2px solid var(--parch-border);
+  border-radius: 3px;
+}
+
+/* ---------- Info Box ---------- */
+.info-box {
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-md);
+  margin: 1.5rem 0;
+  position: relative;
+  padding-left: 3.5rem;
+}
+.info-box .box-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 1.35rem;
+  width: 20px;
+  height: 20px;
+  opacity: .7;
+}
+.info-box.tip {
+  background: rgba(46,204,113,.1);
+  border-left: 4px solid #2ecc71;
+}
+.info-box.warn {
+  background: rgba(241,196,15,.1);
+  border-left: 4px solid #f1c40f;
+}
+.info-box.danger {
+  background: rgba(231,76,60,.1);
+  border-left: 4px solid #e74c3c;
+}
+.info-box.note {
+  background: rgba(155,89,182,.08);
+  border-left: 4px solid #9b59b6;
+}
+
+/* ---------- Tables ---------- */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .95rem;
+  margin: 1.5rem 0;
+}
+.styled-table th, .styled-table td {
+  padding: .75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(201,168,76,.2);
+}
+.styled-table th {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.theme-dark .styled-table th { color: var(--gold); background: rgba(201,168,76,.08); }
+.theme-parchment .styled-table th { color: var(--parch-dark); background: rgba(61,43,31,.06); }
+.styled-table tr:hover td { background: rgba(201,168,76,.04); }
+
+/* ---------- Blockquote / Lore ---------- */
+.lore-block {
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  border-radius: var(--radius-md);
+  font-family: var(--font-accent);
+  font-size: 1.05rem;
+  line-height: 1.9;
+  position: relative;
+}
+.theme-dark .lore-block {
+  background: rgba(201,168,76,.05);
+  border: 1px solid rgba(201,168,76,.15);
+  color: var(--gold-light);
+}
+.theme-parchment .lore-block {
+  background: rgba(61,43,31,.04);
+  border: 1px solid var(--parch-border);
+  color: var(--parch-dark);
+}
+.lore-block::before {
+  content: '"';
+  font-family: var(--font-display);
+  font-size: 4rem;
+  position: absolute;
+  top: -.2rem; left: .75rem;
+  opacity: .15;
+  line-height: 1;
+}
+
+/* ---------- Code Scroll ---------- */
+.scroll-box {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: .9rem;
+  line-height: 1.8;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  color: var(--text-muted);
+}
+.scroll-box .hl { color: var(--gold); font-weight: 700; }
+
+/* ---------- Rule Number ---------- */
+.rule-number {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--gold);
+  opacity: .35;
+  display: block;
+  margin-bottom: .25rem;
+}
+
+/* ---------- Footer ---------- */
+.page-footer {
+  text-align: center;
+  padding: 2rem;
+  font-family: var(--font-accent);
+  font-size: .9rem;
+  opacity: .5;
+  border-top: 1px solid rgba(201,168,76,.1);
+  margin-top: 3rem;
+}
+
+/* ---------- Utility ---------- */
+.text-center { text-align: center; }
+.text-gold { color: var(--gold); }
+.text-muted { color: var(--text-muted); }
+.mt-sm { margin-top: .5rem; }
+.mt-md { margin-top: 1rem; }
+.mt-lg { margin-top: 2rem; }
+.mb-sm { margin-bottom: .5rem; }
+.mb-md { margin-bottom: 1rem; }
+.mb-lg { margin-bottom: 2rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+/* ---------- Animations ---------- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(201,168,76,.2); }
+  50% { box-shadow: 0 0 30px rgba(201,168,76,.4); }
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .85; }
+}
+
+.animate-in { animation: fadeInUp .6s ease both; }
+.glow { animation: glowPulse 3s ease-in-out infinite; }
+
+/* ---------- Print Styles ---------- */
+@media print {
+  @page { margin: 1.2cm; size: A4; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  body { font-size: 11pt !important; }
+  .top-nav, .no-print, .back-to-top, .filter-bar { display: none !important; }
+  .page-hero { padding: .8cm 0; }
+  .ornament { background: linear-gradient(90deg, transparent, #999, transparent); }
+  .ornament::before { color: #999; background: white; }
+  a { text-decoration: none !important; }
+  .container, .container-wide { max-width: 100%; padding: 0; }
+  .cards-grid { display: block; }
+  .lore-block { break-inside: avoid; }
+  .info-box { break-inside: avoid; }
+
+  /* --- Curse Cards: each on its own A4 page --- */
+  .curse-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    page-break-after: always;
+    break-after: page;
+    box-shadow: none !important;
+    transform: none !important;
+    margin: 0;
+    border-width: 3px;
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    min-height: calc(100vh - 3cm);
+    display: flex;
+    flex-direction: column;
+  }
+  .curse-card .card-top { margin-bottom: 1.5rem; }
+  .curse-card .card-number { font-size: 3.5rem; opacity: .25; }
+  .curse-card .curse-name { font-size: 1.6rem; margin-bottom: 1.2rem; padding-bottom: .8rem; }
+  .curse-card .curse-desc { font-size: 1.2rem; line-height: 2; flex: 1; }
+  .curse-card .curse-example { font-size: 1.05rem; }
+  .curse-card .duration { font-size: 1rem; padding: .5rem 1.5rem; margin-top: auto; }
+  .curse-card .card-badge { font-size: .9rem; padding: .35rem 1rem; }
+  .curse-card::before { height: 6px; }
+
+  /* Preserve category colors on print */
+  .cat-communication { border-color: #9b59b6 !important; }
+  .cat-communication::before { background: #9b59b6 !important; }
+  .cat-communication .curse-name { color: #7d3c98 !important; }
+  .cat-communication .card-badge { background: #f0e6f6 !important; color: #7d3c98 !important; border: 1px solid #c39bd3 !important; }
+
+  .cat-movement { border-color: #e67e22 !important; }
+  .cat-movement::before { background: #e67e22 !important; }
+  .cat-movement .curse-name { color: #ca6f1e !important; }
+  .cat-movement .card-badge { background: #fef0e0 !important; color: #ca6f1e !important; border: 1px solid #f0b27a !important; }
+
+  .cat-sensory { border-color: #1abc9c !important; }
+  .cat-sensory::before { background: #1abc9c !important; }
+  .cat-sensory .curse-name { color: #148f77 !important; }
+  .cat-sensory .card-badge { background: #e0f8f2 !important; color: #148f77 !important; border: 1px solid #76d7c4 !important; }
+
+  .cat-physical { border-color: #e74c3c !important; }
+  .cat-physical::before { background: #e74c3c !important; }
+  .cat-physical .curse-name { color: #c0392b !important; }
+  .cat-physical .card-badge { background: #fde8e6 !important; color: #c0392b !important; border: 1px solid #f1948a !important; }
+
+  .cat-interaction { border-color: #2ecc71 !important; }
+  .cat-interaction::before { background: #2ecc71 !important; }
+  .cat-interaction .curse-name { color: #239b56 !important; }
+  .cat-interaction .card-badge { background: #e5faf0 !important; color: #239b56 !important; border: 1px solid #82e0aa !important; }
+
+  .cat-collective { border-color: #f1c40f !important; }
+  .cat-collective::before { background: #f1c40f !important; }
+  .cat-collective .curse-name { color: #b7950b !important; }
+  .cat-collective .card-badge { background: #fef9e0 !important; color: #b7950b !important; border: 1px solid #f7dc6f !important; }
+
+  /* Enigma cards: gold styling preserved */
+  .curse-card.enigma { border-color: #b8860b !important; background: #fffef5 !important; }
+  .curse-card.enigma::before { background: linear-gradient(90deg, #8a6d21, #c9a84c, #8a6d21) !important; }
+  .curse-card.enigma::after { display: none; }
+  .enigma-fragment { background: #fdf6e3 !important; border: 2px dashed #b8860b !important; padding: 1.5rem; margin-top: 1.5rem; }
+  .enigma-label { color: #8a6d21 !important; font-size: 1rem; }
+  .enigma-verse { color: #6d5a1e !important; font-size: 1.15rem; }
+  .enigma-code { color: #333 !important; font-size: 1.1rem; }
+  .rune { text-shadow: none; color: #8a6d21 !important; font-size: 2rem; }
+  .enigma-note { color: #666 !important; }
+
+  /* Non-card print pages */
+  .curse-card:last-child { page-break-after: auto; }
+  .print-page-break { page-break-before: always; break-before: page; }
+  .print-no-break { page-break-inside: avoid; break-inside: avoid; }
+
+  /* Print template pages */
+  .print-template { page-break-after: always; break-after: page; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .container { padding: 1rem; }
+  .page-hero { padding: 2rem 1rem 1.5rem; }
+  .nav-links { gap: .75rem; }
+  .nav-links a { font-size: .7rem; }
+  .curse-card { padding: 1.25rem; }
+  .card-number { font-size: 1.6rem; }
+}

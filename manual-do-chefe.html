@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual do Chefe — O Baú Amaldiçoado</title>
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+    /* Page-specific styles */
+    .hero-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .hero-icon svg {
+      width: 72px;
+      height: 72px;
+      opacity: .25;
+      animation: flicker 5s ease-in-out infinite;
+    }
+    .section-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      vertical-align: middle;
+    }
+    .section-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--gold-dark);
+      opacity: .6;
+      flex-shrink: 0;
+    }
+    .section-number {
+      font-family: var(--font-display);
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      display: block;
+      margin-bottom: .25rem;
+    }
+
+    /* Lore instruction */
+    .lore-instruction {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: var(--parch-dark);
+      opacity: .7;
+      margin-bottom: 1rem;
+      font-size: .95rem;
+    }
+
+    /* Lore title inside block */
+    .lore-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: .75rem;
+      color: var(--parch-dark);
+    }
+    .lore-block p { margin-bottom: .75rem; }
+    .lore-block p:last-child { margin-bottom: 0; }
+    .lore-warning {
+      font-style: italic;
+      margin-top: .5rem;
+      padding-top: .75rem;
+      border-top: 1px solid rgba(61,43,31,.1);
+    }
+
+    /* Checklist subsection */
+    .checklist-section {
+      margin-bottom: 2rem;
+    }
+    .checklist-section h4 {
+      font-family: var(--font-heading);
+      color: var(--parch-dark);
+      margin-bottom: .75rem;
+      padding-bottom: .4rem;
+      border-bottom: 1px solid var(--parch-border);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .checklist-section h4 svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--gold-dark);
+      opacity: .6;
+    }
+    .checklist li strong { color: var(--parch-dark); }
+
+    /* Setup steps */
+    .setup-steps {
+      counter-reset: setup;
+      list-style: none;
+      padding: 0;
+    }
+    .setup-steps li {
+      counter-increment: setup;
+      position: relative;
+      padding: .75rem 0 .75rem 3rem;
+      border-bottom: 1px solid rgba(196,168,130,.2);
+    }
+    .setup-steps li::before {
+      content: counter(setup);
+      position: absolute;
+      left: 0;
+      top: .75rem;
+      width: 28px;
+      height: 28px;
+      background: var(--parch-border);
+      color: white;
+      border-radius: 50%;
+      font-family: var(--font-heading);
+      font-size: .8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .setup-steps li:last-child { border-bottom: none; }
+
+    /* Nested list inside setup steps */
+    .setup-sub {
+      list-style: none;
+      padding: 0;
+      margin-top: .5rem;
+    }
+    .setup-sub li {
+      padding: .3rem 0 .3rem 1.5rem;
+      border-bottom: none;
+      position: relative;
+    }
+    .setup-sub li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: .7rem;
+      width: 8px;
+      height: 8px;
+      background: none;
+      border: 2px solid var(--parch-border);
+      border-radius: 2px;
+      font-size: 0;
+      color: transparent;
+    }
+
+    /* Rune table */
+    .rune-table .rune-cell {
+      font-size: 1.8rem;
+      line-height: 1;
+      text-align: center;
+      color: var(--parch-dark);
+      text-shadow: 0 1px 4px rgba(61,43,31,.15);
+    }
+    .rune-table .letter-cell {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--gold-dark);
+    }
+    .rune-table td, .rune-table th {
+      text-align: center;
+    }
+    .rune-table tr.decoy td {
+      opacity: .5;
+    }
+
+    /* Result display */
+    .result-display {
+      display: flex;
+      justify-content: center;
+      gap: .75rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    .result-letter {
+      width: 56px;
+      height: 68px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--parch-card);
+      border: 2px solid var(--parch-border);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 2px 8px rgba(61,43,31,.1);
+    }
+    .result-letter .r-pos {
+      font-family: var(--font-accent);
+      font-size: .65rem;
+      color: var(--gold-dark);
+      margin-bottom: 2px;
+    }
+    .result-letter .r-rune {
+      font-size: 1.2rem;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .result-letter .r-char {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--parch-dark);
+      line-height: 1;
+    }
+
+    /* Flow diagram */
+    .flow-box {
+      background: var(--parch-card);
+      border: 1px solid var(--parch-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 2rem;
+      margin: 1.5rem 0;
+      font-family: var(--font-body);
+      font-size: .95rem;
+      line-height: 2;
+    }
+    .flow-box .flow-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--parch-dark);
+      margin-bottom: .5rem;
+      font-size: 1rem;
+    }
+    .flow-box code {
+      font-family: var(--font-accent);
+      color: var(--gold-dark);
+      font-size: .95rem;
+    }
+    .flow-indent {
+      margin-left: 1.5rem;
+      border-left: 2px solid var(--parch-border);
+      padding-left: 1rem;
+    }
+    .flow-indent-2 {
+      margin-left: 3rem;
+      border-left: 2px dashed rgba(196,168,130,.4);
+      padding-left: 1rem;
+    }
+
+    /* Tips list */
+    .tips-list {
+      list-style: none;
+      padding: 0;
+    }
+    .tips-list li {
+      padding: 1rem 1rem 1rem 3.5rem;
+      position: relative;
+      border-bottom: 1px solid rgba(196,168,130,.15);
+    }
+    .tips-list li:last-child { border-bottom: none; }
+    .tips-list li::before {
+      content: '';
+      position: absolute;
+      left: 1rem;
+      top: 1.25rem;
+      width: 20px;
+      height: 20px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238a6d21'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z'/%3E%3C/svg%3E");
+      background-size: contain;
+      opacity: .5;
+    }
+    .tips-list li strong {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--parch-dark);
+    }
+
+    /* Verses block */
+    .verses-block {
+      background: var(--parch-card);
+      border: 1px solid var(--parch-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 2rem;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    .verses-block p {
+      font-family: var(--font-accent);
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 2;
+      color: var(--parch-dark);
+      margin: 0;
+    }
+
+    /* What-happens ordered list */
+    .what-happens {
+      counter-reset: wh;
+      list-style: none;
+      padding: 0;
+    }
+    .what-happens li {
+      counter-increment: wh;
+      padding: .6rem 0 .6rem 2.5rem;
+      position: relative;
+      border-bottom: 1px solid rgba(196,168,130,.12);
+    }
+    .what-happens li::before {
+      content: counter(wh);
+      position: absolute;
+      left: 0;
+      top: .65rem;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--gold-dark);
+      opacity: .4;
+    }
+    .what-happens li:last-child { border-bottom: none; }
+
+    /* Moon and stars decorations */
+    .deco-moon {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      opacity: .06;
+      pointer-events: none;
+    }
+    .deco-star {
+      position: absolute;
+      opacity: .06;
+      pointer-events: none;
+    }
+
+    /* Fragment table special styling */
+    .fragment-table .rune-cell {
+      font-size: 1.6rem;
+    }
+    .fragment-table td {
+      vertical-align: middle;
+    }
+
+    @media print {
+      body { background: white !important; background-image: none !important; }
+      .section { break-inside: avoid; }
+      .styled-table { font-size: 9pt; }
+      .result-display { gap: .4rem; }
+      .result-letter { width: 44px; height: 54px; border-color: #888 !important; background: #f5f5f5 !important; }
+      .result-letter .r-char { font-size: 1.1rem; color: #222 !important; }
+      .result-letter .r-rune { color: #555 !important; }
+      .deco-moon, .deco-star { display: none !important; }
+      .checklist li::before { border-color: #666 !important; }
+    }
+
+    @media (max-width: 600px) {
+      .result-letter { width: 44px; height: 56px; }
+      .result-letter .r-char { font-size: 1.1rem; }
+      .result-letter .r-rune { font-size: 1rem; }
+      .rune-table .rune-cell { font-size: 1.4rem; }
+      .flow-box { padding: 1rem; }
+      .flow-indent { margin-left: .75rem; }
+      .flow-indent-2 { margin-left: 1.5rem; }
+    }
+  </style>
+</head>
+<body class="theme-parchment">
+
+<!-- Navigation -->
+<nav class="top-nav flex-between no-print" aria-label="Navegação principal">
+  <a href="index.html" class="nav-brand">O Baú Amaldiçoado</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Início</a></li>
+    <li><a href="manual-do-chefe.html" aria-current="page" style="opacity:1; color:var(--gold-dark);">Manual do Chefe</a></li>
+    <li><a href="manual-da-patrulha.html">Manual da Patrulha</a></li>
+    <li><a href="livro-das-maldicoes.html">Livro das Maldições</a></li>
+    <li><a href="modelos-impressao.html">Impressão</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<header class="page-hero" style="position:relative;">
+  <!-- Decorative moon -->
+  <svg class="deco-moon" width="120" height="120" viewBox="0 0 100 100" fill="var(--parch-dark)">
+    <path d="M50 5C30 5 15 22 15 45c0 25 17 42 35 50 4-2 8-5 11-9-20-5-33-22-33-41 0-22 15-38 33-40C58 6 54 5 50 5z"/>
+  </svg>
+  <!-- Decorative stars -->
+  <svg class="deco-star" style="top:2rem;left:3rem;" width="24" height="24" viewBox="0 0 24 24" fill="var(--parch-dark)">
+    <polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"/>
+  </svg>
+  <svg class="deco-star" style="bottom:2rem;right:4rem;" width="18" height="18" viewBox="0 0 24 24" fill="var(--parch-dark)">
+    <polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"/>
+  </svg>
+
+  <div class="hero-icon">
+    <!-- Book/scroll icon -->
+    <svg viewBox="0 0 80 80" fill="var(--parch-dark)" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 10h32c2.2 0 4 1.8 4 4v44c0 2.2-1.8 4-4 4H16c-2.2 0-4-1.8-4-4V14c0-2.2 1.8-4 4-4zm2 6v40h28V16H18zm4 6h20v2H22v-2zm0 6h20v2H22v-2zm0 6h14v2H22v-2z"/>
+      <path d="M52 14h8c2.2 0 4 1.8 4 4v48c0 2.2-1.8 4-4 4H24c-2.2 0-4-1.8-4-4v-4h28c2.2 0 4-1.8 4-4V14z" opacity=".3"/>
+    </svg>
+  </div>
+
+  <h1 class="display-title">Manual do Chefe</h1>
+  <p class="subtitle">Documento I — Guia de Preparação</p>
+  <span class="ornament"></span>
+  <p style="font-style:italic; opacity:.5; max-width:500px; margin:0 auto;">O Baú Amaldiçoado: A Relíquia das Sombras</p>
+</header>
+
+<main class="container">
+
+  <!-- ============ 1.1 FICHA TÉCNICA ============ -->
+  <section class="section" id="ficha-tecnica">
+    <span class="section-number">Seção 1.1</span>
+    <h2 class="section-title">
+      <span class="section-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v7h7v9H6z"/><path d="M8 14h8v1.5H8zm0 3h5v1.5H8z"/></svg>
+        Ficha Técnica
+      </span>
+    </h2>
+
+    <table class="styled-table">
+      <tbody>
+        <tr>
+          <th style="width:35%;">Nome do Jogo</th>
+          <td>O Baú Amaldiçoado: A Relíquia das Sombras</td>
+        </tr>
+        <tr>
+          <th>Tipo</th>
+          <td>Caça ao Tesouro + Escape Room ao Ar Livre + Dinâmica de Grupo</td>
+        </tr>
+        <tr>
+          <th>Público-alvo</th>
+          <td>Tropa Sênior (15–17 anos)</td>
+        </tr>
+        <tr>
+          <th>Jogadores</th>
+          <td>4 a 8 por patrulha (ideal: 6)</td>
+        </tr>
+        <tr>
+          <th>Duração Estimada</th>
+          <td>60 a 90 minutos</td>
+        </tr>
+        <tr>
+          <th>Local</th>
+          <td>Área de mata/campo com acesso a piscina</td>
+        </tr>
+        <tr>
+          <th>Dificuldade</th>
+          <td>Alta (acúmulo de restrições testa resiliência e cooperação)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============ 1.2 FUNDO DE CENA (LORE) ============ -->
+  <section class="section" id="fundo-de-cena">
+    <span class="section-number">Seção 1.2</span>
+    <h2 class="section-title">
+      <span class="section-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 13.2L4.47 12 12 7.8 19.53 12 12 16.2zM5 13.2v4l7 3.8 7-3.8v-4L12 17l-7-3.8z"/></svg>
+        Fundo de Cena (Lore)
+      </span>
+    </h2>
+
+    <p class="lore-instruction">Leia este texto em voz grave e solene para a tropa antes de iniciar o jogo. Ambiente: se possível, escureça o local, use uma lanterna sob o rosto ou acenda uma fogueira baixa.</p>
+
+    <div class="lore-block">
+      <p class="lore-title">A Lenda do Baú Amaldiçoado</p>
+
+      <p>Conta-se que, há muitos anos, um antigo Chefe Escoteiro conhecido apenas como <strong>Mestre Coruja</strong> foi o maior desbravador que estas terras já conheceram. Ele mapeou cada trilha, nomeou cada árvore e conhecia os segredos de cada pedra deste campo.</p>
+
+      <p>Antes de partir em sua última grande aventura — da qual nunca retornou — Mestre Coruja escondeu seu maior tesouro em algum lugar desta sede. Para protegê-lo, ele o selou com uma maldição antiga, aprendida dos povos que aqui viviam muito antes de nós.</p>
+
+      <p>O tesouro foi lacrado e a chave para encontrá-lo foi dividida em fragmentos, escondidos dentro de um baú de madeira perdido na mata. Mas há um preço: cada segredo revelado carrega consigo uma maldição. Quanto mais perto do tesouro vocês chegarem, mais amaldiçoados ficarão.</p>
+
+      <p>A maldição só se quebra quando o tesouro é encontrado.</p>
+
+      <p>Mestre Coruja deixou um último aviso, entalhado na tampa do baú:</p>
+
+      <p class="lore-warning"><em>"Sempre Alerta, pois os espíritos não perdoam os desatentos. Somente aqueles que suportarem as trevas serão dignos da luz."</em></p>
+
+      <p>O baú foi avistado na mata. Vocês terão coragem de abri-lo?</p>
+    </div>
+  </section>
+
+  <!-- ============ 1.3 CHECKLIST DE MATERIAL ============ -->
+  <section class="section" id="checklist-material">
+    <span class="section-number">Seção 1.3</span>
+    <h2 class="section-title">
+      <span class="section-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM17.99 9l-1.41-1.42-6.59 6.59-2.58-2.57-1.42 1.41 4 3.99z"/></svg>
+        Checklist de Material
+      </span>
+    </h2>
+
+    <!-- Materiais Essenciais -->
+    <div class="checklist-section">
+      <h4>
+        <svg viewBox="0 0 24 24"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-1 15l-4-4 1.41-1.42L11 14.17l6.59-6.59L19 9l-8 8z"/></svg>
+        Materiais Essenciais
+      </h4>
+      <ul class="checklist">
+        <li><strong>1 Caixote ou Baú de madeira</strong> — pode ser uma caixa de papelão reforçada decorada para parecer antiga (manchas de chá, bordas levemente queimadas, inscrições feitas com pincel atômico)</li>
+        <li><strong>40 Envelopes</strong> pardos ou em papel kraft — selados (cola ou fita adesiva) e numerados de 1 a 40 por fora, em letra grande e visível</li>
+        <li><strong>40 Cartões impressos</strong> (conteúdo no Documento 3) — um dentro de cada envelope</li>
+        <li><strong>1 Pergaminho de Decifração</strong> — o "Alfabeto das Trevas" (modelo na seção 1.5) — deve estar SOLTO dentro do baú, visível ao abri-lo, por cima dos envelopes</li>
+        <li><strong>1 Folha de Registro</strong> dos Fragmentos em branco (modelo no Documento 4)</li>
+        <li><strong>4 a 6 vendas ou lenços escuros</strong> (para maldições sensoriais)</li>
+        <li><strong>1 rolo de barbante ou fita de tecido</strong> (para maldições de "corrente" e "mãos acorrentadas")</li>
+        <li><strong>1 caneta ou lápis</strong></li>
+      </ul>
+    </div>
+
+    <!-- O Tesouro -->
+    <div class="checklist-section">
+      <h4>
+        <svg viewBox="0 0 24 24"><path d="M5 4h14c.55 0 1 .45 1 1v3H4V5c0-.55.45-1 1-1zm-1 6h16v9c0 .55-.45 1-1 1H5c-.55 0-1-.45-1-1v-9zm6 2v2h4v-2h-4z"/></svg>
+        O Tesouro
+      </h4>
+      <ul class="checklist">
+        <li><strong>1 Caixa menor decorada</strong> (estilo baú do tesouro, ou embrulhada em papel envelhecido)</li>
+        <li><strong>Tesouro sugerido:</strong> combinação de guloseimas, um "certificado de bravura" personalizado, insígnias, ou qualquer recompensa significativa para a tropa</li>
+        <li><strong>Bilhete final</strong> dentro da caixa com o texto: <em>"A maldição está quebrada. Mestre Coruja sorri do além. Vocês provaram ser dignos. Sempre Alerta!"</em></li>
+      </ul>
+    </div>
+
+    <!-- Opcionais -->
+    <div class="checklist-section">
+      <h4>
+        <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        Opcionais (Ambientação)
+      </h4>
+      <ul class="checklist">
+        <li>Lanterna ou velas LED para a leitura da lore</li>
+        <li>Trilha sonora de mistério/suspense (celular com caixa bluetooth)</li>
+        <li>Capa ou chapéu para o Chefe narrador</li>
+        <li>Pedras e galhos dispostos ao redor do baú como decoração</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 1.4 INSTRUÇÕES DE SETUP ============ -->
+  <section class="section" id="instrucoes-setup">
+    <span class="section-number">Seção 1.4</span>
+    <h2 class="section-title">
+      <span class="section-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+        Instruções de Setup
+      </span>
+    </h2>
+
+    <!-- Escondendo o Baú Inicial -->
+    <h3 class="mb-md mt-lg" style="color:var(--parch-dark);">Escondendo o Baú Inicial</h3>
+
+    <ol class="setup-steps">
+      <li>Escolha um local na mata ou área arborizada que exija uma pequena busca (5 a 10 minutos de caminhada e exploração).</li>
+      <li>Posicione o baú de forma que pareça "descoberto acidentalmente" — parcialmente coberto por folhas, encostado em uma árvore, em uma cova rasa.</li>
+      <li>Sinalize o caminho com marcações sutis (fitas escuras amarradas em troncos, setas riscadas no chão com graveto) para garantir que a patrulha encontre o baú. Não dificulte demais — o desafio principal são as maldições, não a busca inicial.</li>
+      <li>
+        Dentro do baú, organize na seguinte ordem (de cima para baixo):
+        <ul class="setup-sub">
+          <li><strong>Topo:</strong> O Pergaminho de Decifração (Alfabeto das Trevas) — bem visível</li>
+          <li><strong>Abaixo:</strong> A Folha de Registro em branco + caneta</li>
+          <li><strong>Base:</strong> Os 40 envelopes empilhados em ordem numérica (1 no topo, 40 no fundo)</li>
+        </ul>
+      </li>
+    </ol>
+
+    <!-- Escondendo o Tesouro Final -->
+    <h3 class="mb-md mt-lg" style="color:var(--parch-dark);">Escondendo o Tesouro Final</h3>
+
+    <ol class="setup-steps">
+      <li>
+        O tesouro deve ser escondido <strong>na área da piscina</strong> — sugestões:
+        <ul class="setup-sub">
+          <li>Dentro de um arbusto ou moita próxima à borda da piscina</li>
+          <li>Atrás de um banco ou cadeira na área de descanso</li>
+          <li>Dentro de um armário de materiais da piscina (se acessível)</li>
+          <li>Sob uma toalha ou lona perto da piscina</li>
+          <li>Em um vaso de planta próximo</li>
+        </ul>
+      </li>
+      <li>O tesouro deve estar em local <strong>seguro e acessível</strong> — NUNCA dentro da água ou em locais que exijam escalada.</li>
+      <li>Proteja o tesouro da umidade com um saco plástico transparente.</li>
+      <li>Memorize o local exato. Se a patrulha estiver muito perdida após decifrar "PISCINA", use o sistema "quente/frio" para orientá-los.</li>
+    </ol>
+
+    <div class="info-box warn">
+      <svg class="box-icon" viewBox="0 0 24 24" fill="#f1c40f"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+      <strong>Segurança:</strong> Nunca esconda o tesouro dentro da piscina ou em locais que exijam escalada. O local deve ser seguro e acessível a todos os participantes.
+    </div>
+  </section>
+
+  <!-- ============ 1.5 O ENIGMA FINAL ============ -->
+  <section class="section" id="enigma-final">
+    <span class="section-number">Seção 1.5</span>
+    <h2 class="section-title">
+      <span class="section-icon">
+        <!-- Key icon -->
+        <svg viewBox="0 0 24 24"><path d="M12.65 10a6 6 0 1 0 0 4H17v4h4v-4h2v-4H12.65zM7 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+        O Enigma Final — Explicação Completa
+      </span>
+    </h2>
+
+    <!-- O Sistema -->
+    <h3 class="mb-md" style="color:var(--parch-dark);">O Sistema: "O Alfabeto das Trevas"</h3>
+    <p class="mb-md">O enigma funciona em <strong>duas camadas complementares</strong>:</p>
+
+    <!-- Camada 1 -->
+    <h4 class="mb-sm" style="color:var(--gold-dark);">Camada 1 — O Código Rúnico (principal)</h4>
+    <p class="mb-md">Dentro do baú, junto aos cartões, está o <strong>Pergaminho de Decifração</strong> contendo o "Alfabeto das Trevas" — uma tabela que converte símbolos rúnicos em letras do nosso alfabeto.</p>
+
+    <p class="mb-md">Ao longo dos 40 cartões, <strong>5 deles</strong> (Cartões n.º 7, 15, 23, 31 e 38) contêm, além da maldição, um <strong>Fragmento Arcano</strong>. Cada fragmento traz:</p>
+
+    <ul style="margin-bottom:1.5rem;">
+      <li>Um número romano (I a V) indicando a ordem</li>
+      <li>Um ou dois símbolos rúnicos</li>
+      <li>A(s) posição(ões) que esses símbolos ocupam na palavra secreta</li>
+    </ul>
+
+    <p>Quando a patrulha coletar todos os 5 fragmentos, converter os símbolos em letras usando o Pergaminho, e posicioná-las na ordem correta, formará a palavra:</p>
+
+    <!-- Result Display: P-I-S-C-I-N-A -->
+    <div class="result-display">
+      <div class="result-letter">
+        <span class="r-pos">1</span>
+        <span class="r-rune">☽</span>
+        <span class="r-char">P</span>
+      </div>
+      <div class="result-letter">
+        <span class="r-pos">2</span>
+        <span class="r-rune">⚔</span>
+        <span class="r-char">I</span>
+      </div>
+      <div class="result-letter">
+        <span class="r-pos">3</span>
+        <span class="r-rune">⚡</span>
+        <span class="r-char">S</span>
+      </div>
+      <div class="result-letter">
+        <span class="r-pos">4</span>
+        <span class="r-rune">◆</span>
+        <span class="r-char">C</span>
+      </div>
+      <div class="result-letter">
+        <span class="r-pos">5</span>
+        <span class="r-rune">⚔</span>
+        <span class="r-char">I</span>
+      </div>
+      <div class="result-letter">
+        <span class="r-pos">6</span>
+        <span class="r-rune">≈</span>
+        <span class="r-char">N</span>
+      </div>
+      <div class="result-letter">
+        <span class="r-pos">7</span>
+        <span class="r-rune">△</span>
+        <span class="r-char">A</span>
+      </div>
+    </div>
+
+    <p class="text-center mb-lg" style="font-family:var(--font-accent); opacity:.6;">(7 letras, posições 1 a 7)</p>
+
+    <!-- Camada 2 -->
+    <h4 class="mb-sm" style="color:var(--gold-dark);">Camada 2 — Versos Místicos (confirmação)</h4>
+    <p class="mb-md">Cada fragmento também contém um verso poético. Individualmente cada verso é vago, mas juntos formam uma descrição clara do local:</p>
+
+    <div class="verses-block">
+      <p>"Moldura de pedra abraça águas dormentes</p>
+      <p>Onde os bravos mergulham quando o sol é inclemente</p>
+      <p>Nem rio, nem mar — mãos humanas a fizeram</p>
+      <p>À noite a lua dança no espelho que teceram</p>
+      <p>O tesouro jaz a dez passos de onde a água foi domada"</p>
+    </div>
+
+    <p class="mb-lg">Essa segunda camada serve como confirmação: mesmo que haja dúvida sobre a decodificação das runas, os versos apontam claramente para a <strong>piscina</strong>.</p>
+
+    <!-- Decodificação dos Fragmentos — Tabela Mestra -->
+    <h3 class="mb-md" style="color:var(--parch-dark);">Decodificação dos Fragmentos — Tabela Mestra</h3>
+
+    <div style="overflow-x:auto;">
+      <table class="styled-table fragment-table">
+        <thead>
+          <tr>
+            <th>Fragmento</th>
+            <th>Cartão</th>
+            <th>Símbolo(s)</th>
+            <th>Posição na Palavra</th>
+            <th>Letra(s) Decodificadas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>I</strong></td>
+            <td>#7</td>
+            <td class="rune-cell">☽</td>
+            <td>1ª</td>
+            <td><strong>P</strong></td>
+          </tr>
+          <tr>
+            <td><strong>II</strong></td>
+            <td>#15</td>
+            <td class="rune-cell">⚔</td>
+            <td>2ª e 5ª</td>
+            <td><strong>I</strong> (mesma letra, repete)</td>
+          </tr>
+          <tr>
+            <td><strong>III</strong></td>
+            <td>#23</td>
+            <td class="rune-cell">⚡</td>
+            <td>3ª</td>
+            <td><strong>S</strong></td>
+          </tr>
+          <tr>
+            <td><strong>IV</strong></td>
+            <td>#31</td>
+            <td class="rune-cell">◆</td>
+            <td>4ª</td>
+            <td><strong>C</strong></td>
+          </tr>
+          <tr>
+            <td><strong>V</strong></td>
+            <td>#38</td>
+            <td class="rune-cell">≈ &nbsp; △</td>
+            <td>6ª e 7ª</td>
+            <td><strong>N</strong> e <strong>A</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- O Pergaminho de Decifração -->
+    <h3 class="mb-md mt-lg" style="color:var(--parch-dark);">O Pergaminho de Decifração (Alfabeto das Trevas)</h3>
+
+    <p class="mb-md">A tabela abaixo deve ser copiada à mão em papel envelhecido (mergulhe em chá e seque) ou impressa com fonte gótica. <strong>IMPORTANTE:</strong> a tabela está propositalmente <strong>DESORDENADA</strong> e contém <strong>6 símbolos falsos</strong> (chamarizes) para aumentar o desafio.</p>
+
+    <div style="overflow-x:auto;">
+      <table class="styled-table rune-table">
+        <thead>
+          <tr>
+            <th style="width:50%;">Runa</th>
+            <th style="width:50%;">Letra</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="decoy">
+            <td class="rune-cell">★</td>
+            <td class="letter-cell">M</td>
+          </tr>
+          <tr>
+            <td class="rune-cell">⚔</td>
+            <td class="letter-cell">I</td>
+          </tr>
+          <tr class="decoy">
+            <td class="rune-cell">☠</td>
+            <td class="letter-cell">T</td>
+          </tr>
+          <tr>
+            <td class="rune-cell">≈</td>
+            <td class="letter-cell">N</td>
+          </tr>
+          <tr>
+            <td class="rune-cell">☽</td>
+            <td class="letter-cell">P</td>
+          </tr>
+          <tr class="decoy">
+            <td class="rune-cell">Ψ</td>
+            <td class="letter-cell">O</td>
+          </tr>
+          <tr class="decoy">
+            <td class="rune-cell">⊕</td>
+            <td class="letter-cell">E</td>
+          </tr>
+          <tr>
+            <td class="rune-cell">⚡</td>
+            <td class="letter-cell">S</td>
+          </tr>
+          <tr class="decoy">
+            <td class="rune-cell">∞</td>
+            <td class="letter-cell">R</td>
+          </tr>
+          <tr>
+            <td class="rune-cell">△</td>
+            <td class="letter-cell">A</td>
+          </tr>
+          <tr class="decoy">
+            <td class="rune-cell">Ω</td>
+            <td class="letter-cell">L</td>
+          </tr>
+          <tr>
+            <td class="rune-cell">◆</td>
+            <td class="letter-cell">C</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box note">
+      <svg class="box-icon" viewBox="0 0 24 24" fill="#9b59b6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <strong>Nota para o Chefe:</strong> Dos 12 símbolos, apenas 6 (☽, ⚔, ⚡, ◆, ≈, △) aparecem nos fragmentos. Os outros 6 (★, ☠, Ψ, ⊕, ∞, Ω) são chamarizes que nunca aparecem nos cartões. Não revele quais são reais — isso faz parte do desafio.
+    </div>
+
+    <!-- O Que Acontece Quando Decifram -->
+    <h3 class="mb-md mt-lg" style="color:var(--parch-dark);">O Que Acontece Quando Decifram</h3>
+
+    <ol class="what-happens">
+      <li>A patrulha forma a palavra <strong>PISCINA</strong>.</li>
+      <li>Devem se dirigir à área da piscina (com todas as maldições ainda ativas — o caos é parte da diversão).</li>
+      <li>O tesouro está escondido nas proximidades imediatas da piscina (até 10 passos da borda).</li>
+      <li>Ao encontrar o tesouro, leia ou peça que leiam o bilhete final: <em>"A maldição está quebrada!"</em></li>
+      <li>Todas as maldições são removidas. Celebração!</li>
+    </ol>
+
+    <!-- Fluxo Visual do Enigma -->
+    <h3 class="mb-md mt-lg" style="color:var(--parch-dark);">Fluxo Visual do Enigma</h3>
+
+    <div class="flow-box">
+      <div class="flow-title">DENTRO DO BAÚ</div>
+      <div class="flow-indent">
+        <div>Pergaminho (Alfabeto das Trevas) <code>← chave de decifração</code></div>
+        <div>40 Envelopes selados</div>
+        <div class="flow-indent-2" style="margin-top:.5rem;">
+          <div>Cartão #7 &rarr; Fragmento I &rarr; <span style="font-size:1.2rem;">☽</span> &rarr; Pos. 1 &rarr; <strong>P</strong></div>
+          <div>Cartão #15 &rarr; Fragmento II &rarr; <span style="font-size:1.2rem;">⚔</span> &rarr; Pos. 2 e 5 &rarr; <strong>I, I</strong></div>
+          <div>Cartão #23 &rarr; Fragmento III &rarr; <span style="font-size:1.2rem;">⚡</span> &rarr; Pos. 3 &rarr; <strong>S</strong></div>
+          <div>Cartão #31 &rarr; Fragmento IV &rarr; <span style="font-size:1.2rem;">◆</span> &rarr; Pos. 4 &rarr; <strong>C</strong></div>
+          <div>Cartão #38 &rarr; Fragmento V &rarr; <span style="font-size:1.2rem;">≈ △</span> &rarr; Pos. 6 e 7 &rarr; <strong>N, A</strong></div>
+          <div style="margin-top:.75rem; padding-top:.75rem; border-top:2px solid var(--parch-border); font-family:var(--font-heading); font-weight:700; color:var(--parch-dark);">
+            RESULTADO: P-I-S-C-I-N-A &rarr; Ir até a piscina &rarr; TESOURO!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 1.6 DICAS PARA A CHEFIA ============ -->
+  <section class="section" id="dicas-chefia">
+    <span class="section-number">Seção 1.6</span>
+    <h2 class="section-title">
+      <span class="section-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z"/></svg>
+        Dicas para a Chefia
+      </span>
+    </h2>
+
+    <ul class="tips-list">
+      <li>
+        <strong>Segurança primeiro:</strong> Acompanhe a patrulha a distância segura. Certifique-se de que a área é segura, especialmente com jovens vendados ou andando de costas.
+      </li>
+      <li>
+        <strong>Trégua dos Espíritos:</strong> Se perceber que a patrulha está sobrecarregada demais pelas maldições acumuladas (frustração real, não diversão), declare uma "Trégua dos Espíritos" — todas as maldições ficam suspensas por 3 minutos. Use no máximo 2 vezes.
+      </li>
+      <li>
+        <strong>Inclusão:</strong> Se algum jovem tiver limitação física real, adapte as maldições de locomoção para alternativas que ele possa executar confortavelmente. O jogo é para TODOS.
+      </li>
+      <li>
+        <strong>Fiscalização e Transferência de Maldições:</strong> Os membros da patrulha devem se fiscalizar mutuamente (e a Chefia também fiscaliza). Quando alguém for flagrado quebrando uma maldição: <em>(a)</em> quem flagrou pode transferir uma de suas próprias maldições para o infrator, ou <em>(b)</em> o Chefe pode transferir a maldição de outro membro para o infrator. Esse mecanismo incentiva a atenção constante e dá uma motivação extra para os jovens ficarem de olho uns nos outros.
+      </li>
+      <li>
+        <strong>Não abriram todos os cartões?</strong> Se a patrulha quiser tentar resolver o enigma antes de chegar ao cartão 38, podem tentar — mas sem todos os 5 fragmentos será praticamente impossível. Incentive-os a continuar.
+      </li>
+      <li>
+        <strong>Controle de tempo:</strong> Se o jogo ultrapassar 90 minutos, permita que a patrulha pule cartões para chegar mais rápido aos próximos cartões de enigma (sem revelar quais são).
+      </li>
+      <li>
+        <strong>Registro fotográfico:</strong> Tire fotos e vídeos! A patrulha inteira amaldiçoada — um andando de caranguejo, outro cantando ópera, outro vendado, outro falando rimando — é memória de tropa que vale ouro.
+      </li>
+      <li>
+        <strong>Pós-jogo:</strong> Depois de encontrar o tesouro, faça uma roda e peça que cada um conte qual maldição foi a mais difícil de manter. Excelente momento para reflexão sobre resiliência e trabalho em equipe.
+      </li>
+    </ul>
+
+    <div class="info-box tip">
+      <svg class="box-icon" viewBox="0 0 24 24" fill="#2ecc71"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/></svg>
+      <strong>Dica:</strong> Use a "Trégua dos Espíritos" com sabedoria — é uma ferramenta para manter a diversão, não para facilitar o jogo. A graça está no caos controlado!
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="page-footer">
+  <span class="ornament" style="margin-bottom:1rem;"></span>
+  <p>O Baú Amaldiçoado: A Relíquia das Sombras</p>
+  <p style="margin-top:.25rem;">Documento I — Manual do Chefe</p>
+  <p style="margin-top:.75rem; font-size:.8rem;">Tropa Sênior — Sempre Alerta!</p>
+</footer>
+
+</body>
+</html>

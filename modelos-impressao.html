@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelos de Impressão — O Baú Amaldiçoado</title>
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+    /* ========== Page-specific screen styles ========== */
+
+    .hero-icon svg {
+      width: 72px;
+      height: 72px;
+      opacity: .2;
+      animation: flicker 5s ease-in-out infinite;
+    }
+
+    .section-number {
+      font-family: var(--font-display);
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      opacity: .6;
+      display: block;
+      margin-bottom: .25rem;
+    }
+
+    .tip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .tip-card {
+      background: rgba(61,43,31,.04);
+      border: 1px solid var(--parch-border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .tip-card svg {
+      width: 36px;
+      height: 36px;
+      fill: var(--gold-dark);
+      opacity: .5;
+      margin-bottom: .75rem;
+    }
+    .tip-card h4 {
+      font-family: var(--font-heading);
+      font-size: .9rem;
+      color: var(--parch-dark);
+      margin-bottom: .4rem;
+    }
+    .tip-card p {
+      font-size: .9rem;
+      opacity: .75;
+      line-height: 1.5;
+    }
+
+    /* ========== Print Template Cards ========== */
+
+    .print-template {
+      position: relative;
+      margin: 2.5rem auto;
+      max-width: 540px;
+    }
+
+    .pt-card {
+      border: 3px solid var(--parch-dark);
+      border-radius: 4px;
+      padding: 2.5rem 2rem 2rem;
+      position: relative;
+      background: var(--parch-card);
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+    }
+    .pt-card::before,
+    .pt-card::after,
+    .pt-card .corner-bl,
+    .pt-card .corner-br {
+      content: '';
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      pointer-events: none;
+    }
+    .pt-card::before {
+      top: 6px; left: 6px;
+      border-top: 3px solid var(--gold-dark);
+      border-left: 3px solid var(--gold-dark);
+    }
+    .pt-card::after {
+      top: 6px; right: 6px;
+      border-top: 3px solid var(--gold-dark);
+      border-right: 3px solid var(--gold-dark);
+    }
+    .pt-card .corner-bl {
+      bottom: 6px; left: 6px;
+      border-bottom: 3px solid var(--gold-dark);
+      border-left: 3px solid var(--gold-dark);
+    }
+    .pt-card .corner-br {
+      bottom: 6px; right: 6px;
+      border-bottom: 3px solid var(--gold-dark);
+      border-right: 3px solid var(--gold-dark);
+    }
+
+    .pt-header {
+      text-align: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px double var(--parch-dark);
+    }
+    .pt-header svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--parch-dark);
+      opacity: .5;
+      margin-bottom: .25rem;
+    }
+    .pt-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--parch-dark);
+    }
+    .pt-card-number {
+      font-family: var(--font-heading);
+      font-size: .85rem;
+      letter-spacing: .06em;
+      margin-top: .35rem;
+      color: var(--parch-dark);
+      opacity: .6;
+    }
+    .pt-card-number .blank-field {
+      display: inline-block;
+      border-bottom: 1.5px solid var(--parch-dark);
+      width: 3rem;
+      margin-left: .25rem;
+    }
+
+    .pt-body {
+      flex: 1;
+      border: 1px solid rgba(61,43,31,.25);
+      border-radius: 3px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .pt-curse-label {
+      font-family: var(--font-heading);
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--parch-dark);
+      opacity: .7;
+      margin-bottom: .25rem;
+    }
+    .pt-curse-name {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--blood);
+      letter-spacing: .02em;
+      margin-bottom: .75rem;
+    }
+    .pt-curse-name .blank-line {
+      display: block;
+      border-bottom: 1.5px dashed var(--blood);
+      width: 80%;
+      height: 1.5rem;
+    }
+    .pt-curse-desc {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--parch-dark);
+    }
+    .pt-curse-desc .blank-lines {
+      display: block;
+      margin-top: .5rem;
+    }
+    .pt-curse-desc .blank-lines span {
+      display: block;
+      border-bottom: 1px solid rgba(61,43,31,.2);
+      height: 2rem;
+    }
+    .pt-duration {
+      font-family: var(--font-accent);
+      font-size: .85rem;
+      margin-top: .75rem;
+      color: var(--parch-dark);
+    }
+    .pt-duration .blank-field {
+      display: inline-block;
+      border-bottom: 1.5px solid var(--parch-dark);
+      width: 8rem;
+      margin-left: .25rem;
+    }
+
+    .pt-footer-quote {
+      text-align: center;
+      font-family: var(--font-accent);
+      font-size: .85rem;
+      font-style: italic;
+      color: var(--parch-dark);
+      opacity: .6;
+      line-height: 1.5;
+    }
+
+    /* -- Enigma fragment section -- */
+    .pt-fragment {
+      border: 2px dashed var(--gold-dark);
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      margin: .75rem 0 1rem;
+      background: rgba(201,168,76,.06);
+      position: relative;
+    }
+    .pt-fragment-label {
+      font-family: var(--font-display);
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      margin-bottom: .5rem;
+    }
+    .pt-fragment-label svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--gold-dark);
+    }
+    .pt-fragment-label .blank-field {
+      display: inline-block;
+      border-bottom: 1.5px solid var(--gold-dark);
+      width: 4rem;
+    }
+    .pt-fragment-verse {
+      font-family: var(--font-accent);
+      font-style: italic;
+      color: var(--parch-dark);
+      font-size: .95rem;
+      margin-bottom: .5rem;
+      line-height: 1.6;
+    }
+    .pt-fragment-verse .blank-line {
+      display: block;
+      border-bottom: 1px dashed rgba(138,109,33,.4);
+      width: 90%;
+      height: 1.5rem;
+    }
+    .pt-fragment-code {
+      font-family: var(--font-heading);
+      font-size: .9rem;
+      color: var(--parch-dark);
+    }
+    .pt-fragment-code .rune-blank {
+      display: inline-block;
+      border: 1.5px solid var(--gold-dark);
+      width: 2rem;
+      height: 2rem;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin: 0 .25rem;
+      text-align: center;
+      line-height: 2rem;
+      font-size: 1.4rem;
+      color: var(--gold-dark);
+    }
+    .pt-fragment-note {
+      font-size: .8rem;
+      font-style: italic;
+      color: var(--parch-dark);
+      opacity: .55;
+      margin-top: .4rem;
+    }
+
+    /* -- Filled example marker -- */
+    .example-badge {
+      position: absolute;
+      top: -12px;
+      right: 16px;
+      font-family: var(--font-heading);
+      font-size: .65rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: var(--blood);
+      color: #fff;
+      padding: .2rem .75rem;
+      border-radius: 3px;
+      z-index: 2;
+    }
+    .example-badge.enigma-badge {
+      background: var(--gold-dark);
+    }
+
+    /* ========== Scroll Template ========== */
+
+    .scroll-template {
+      position: relative;
+      max-width: 600px;
+      margin: 2.5rem auto;
+    }
+    .scroll-parchment {
+      position: relative;
+      background: var(--parch-card);
+      border: 4px double var(--parch-dark);
+      border-radius: 6px;
+      padding: 3rem 2.5rem;
+      min-height: 500px;
+    }
+    .scroll-parchment::before,
+    .scroll-parchment::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+    }
+    .scroll-parchment::before {
+      top: 10px; left: 10px;
+      border-top: 3px solid var(--gold-dark);
+      border-left: 3px solid var(--gold-dark);
+    }
+    .scroll-parchment::after {
+      top: 10px; right: 10px;
+      border-top: 3px solid var(--gold-dark);
+      border-right: 3px solid var(--gold-dark);
+    }
+    .scroll-corner-bl,
+    .scroll-corner-br {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+    }
+    .scroll-corner-bl {
+      bottom: 10px; left: 10px;
+      border-bottom: 3px solid var(--gold-dark);
+      border-left: 3px solid var(--gold-dark);
+    }
+    .scroll-corner-br {
+      bottom: 10px; right: 10px;
+      border-bottom: 3px solid var(--gold-dark);
+      border-right: 3px solid var(--gold-dark);
+    }
+
+    .scroll-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--parch-dark);
+      margin-bottom: .25rem;
+    }
+    .scroll-subtitle-line {
+      display: block;
+      width: 160px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--parch-dark), transparent);
+      margin: .5rem auto 1rem;
+    }
+    .scroll-quote {
+      font-family: var(--font-accent);
+      font-style: italic;
+      text-align: center;
+      color: var(--parch-dark);
+      opacity: .7;
+      font-size: .95rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .rune-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem 1rem;
+      margin: 2rem 0;
+      padding: 1.5rem;
+    }
+    .rune-pair {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .15rem;
+      padding: .75rem .5rem;
+      border: 1px solid rgba(61,43,31,.15);
+      border-radius: 4px;
+      background: rgba(61,43,31,.03);
+      position: relative;
+    }
+    .rune-pair::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 20%; right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+      opacity: .3;
+    }
+    .rune-symbol {
+      font-size: 2.4rem;
+      line-height: 1;
+      color: var(--parch-dark);
+    }
+    .rune-arrow {
+      font-family: var(--font-heading);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      opacity: .6;
+    }
+    .rune-letter {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--blood);
+    }
+
+    .scroll-ornament {
+      display: flex;
+      justify-content: center;
+      gap: .75rem;
+      margin: 1.5rem 0;
+      opacity: .3;
+    }
+    .scroll-ornament span {
+      font-size: 1rem;
+      color: var(--parch-dark);
+    }
+
+    .scroll-closing {
+      font-family: var(--font-accent);
+      font-style: italic;
+      text-align: center;
+      color: var(--parch-dark);
+      font-size: .9rem;
+      line-height: 1.7;
+      margin-top: 1.5rem;
+    }
+    .scroll-closing .attribution {
+      display: block;
+      margin-top: .5rem;
+      font-family: var(--font-heading);
+      font-style: normal;
+      font-size: .85rem;
+      letter-spacing: .06em;
+    }
+
+    /* ========== Registration Sheet ========== */
+
+    .reg-sheet {
+      max-width: 600px;
+      margin: 2.5rem auto;
+      border: 3px solid var(--parch-dark);
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+      background: var(--parch-card);
+      position: relative;
+    }
+    .reg-sheet::before,
+    .reg-sheet::after {
+      content: '';
+      position: absolute;
+      width: 28px;
+      height: 28px;
+    }
+    .reg-sheet::before {
+      top: 6px; left: 6px;
+      border-top: 3px solid var(--gold-dark);
+      border-left: 3px solid var(--gold-dark);
+    }
+    .reg-sheet::after {
+      top: 6px; right: 6px;
+      border-top: 3px solid var(--gold-dark);
+      border-right: 3px solid var(--gold-dark);
+    }
+    .reg-corner-bl,
+    .reg-corner-br {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+    }
+    .reg-corner-bl {
+      bottom: 6px; left: 6px;
+      border-bottom: 3px solid var(--gold-dark);
+      border-left: 3px solid var(--gold-dark);
+    }
+    .reg-corner-br {
+      bottom: 6px; right: 6px;
+      border-bottom: 3px solid var(--gold-dark);
+      border-right: 3px solid var(--gold-dark);
+    }
+
+    .reg-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--parch-dark);
+      margin-bottom: .25rem;
+    }
+    .reg-title-line {
+      display: block;
+      width: 200px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--parch-dark), transparent);
+      margin: .5rem auto 1.5rem;
+    }
+
+    .reg-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    .reg-table th {
+      font-family: var(--font-heading);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--parch-dark);
+      padding: .6rem .5rem;
+      border-bottom: 2px solid var(--parch-dark);
+      text-align: left;
+    }
+    .reg-table td {
+      font-family: var(--font-body);
+      font-size: .95rem;
+      padding: .75rem .5rem;
+      border-bottom: 1px solid rgba(61,43,31,.2);
+      color: var(--parch-dark);
+    }
+    .reg-table .frag-num {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .reg-table .fill-blank {
+      display: inline-block;
+      border-bottom: 1.5px solid var(--parch-dark);
+      min-width: 3rem;
+      height: 1.5rem;
+      vertical-align: bottom;
+    }
+    .reg-table .rune-box {
+      display: inline-block;
+      border: 1.5px solid var(--parch-dark);
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 3px;
+      vertical-align: middle;
+      text-align: center;
+      line-height: 2.2rem;
+      font-size: 1.3rem;
+    }
+
+    .decode-section {
+      border-top: 2px solid var(--parch-dark);
+      padding-top: 1.5rem;
+      margin-top: .5rem;
+    }
+    .decode-label {
+      font-family: var(--font-heading);
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--parch-dark);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .decode-slots {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      margin-bottom: 1.5rem;
+    }
+    .decode-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .25rem;
+    }
+    .decode-slot .slot-box {
+      width: 2.5rem;
+      height: 2.5rem;
+      border: 2px solid var(--parch-dark);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--parch-dark);
+    }
+    .decode-slot .slot-num {
+      font-family: var(--font-heading);
+      font-size: .7rem;
+      color: var(--parch-dark);
+      opacity: .5;
+    }
+    .decode-word {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .decode-word-label {
+      font-family: var(--font-display);
+      font-size: .85rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--blood);
+      margin-bottom: .5rem;
+    }
+    .decode-word-blanks {
+      display: inline-block;
+      border-bottom: 2px solid var(--blood);
+      width: 70%;
+      height: 2rem;
+    }
+
+    .reg-footer-quote {
+      text-align: center;
+      font-family: var(--font-accent);
+      font-size: .85rem;
+      font-style: italic;
+      color: var(--parch-dark);
+      opacity: .6;
+      line-height: 1.6;
+      margin-top: 2rem;
+    }
+
+    /* ========== Template label  ========== */
+    .template-label {
+      text-align: center;
+      margin-bottom: .5rem;
+    }
+    .template-label span {
+      font-family: var(--font-heading);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--parch-dark);
+      opacity: .45;
+    }
+
+    /* ========== Tips section ========== */
+    .tips-list {
+      list-style: none;
+      padding: 0;
+    }
+    .tips-list li {
+      padding: .75rem 0 .75rem 2.25rem;
+      position: relative;
+      border-bottom: 1px solid rgba(61,43,31,.08);
+      line-height: 1.65;
+    }
+    .tips-list li::before {
+      content: '◆';
+      position: absolute;
+      left: 0;
+      top: .8rem;
+      font-size: .6rem;
+      color: var(--gold-dark);
+    }
+
+    /* ========== PRINT STYLES ========== */
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 1.2cm;
+      }
+
+      body {
+        font-size: 11pt !important;
+        background: white !important;
+        color: black !important;
+        background-image: none !important;
+      }
+
+      .top-nav,
+      .no-print,
+      .page-hero,
+      .tip-grid,
+      .example-badge,
+      #intro,
+      #dicas-formatacao,
+      .page-footer {
+        display: none !important;
+      }
+
+      h1, h2, h3, h4 { color: black !important; }
+      a { color: black !important; }
+      .container { max-width: 100%; padding: 0; }
+
+      .print-template {
+        page-break-after: always;
+        page-break-inside: avoid;
+        break-after: page;
+        break-inside: avoid;
+        max-width: 100%;
+        margin: 0;
+      }
+
+      .pt-card {
+        border: 3px solid #222 !important;
+        background: white !important;
+        box-shadow: none !important;
+        min-height: auto;
+        padding: 2rem 1.5rem 1.5rem;
+      }
+      .pt-card::before { border-color: #555 !important; }
+      .pt-card::after { border-color: #555 !important; }
+      .pt-card .corner-bl { border-color: #555 !important; }
+      .pt-card .corner-br { border-color: #555 !important; }
+      .pt-header { border-bottom-color: #222 !important; }
+      .pt-header svg { fill: #222 !important; }
+      .pt-title { color: #111 !important; }
+      .pt-card-number { color: #333 !important; }
+      .pt-card-number .blank-field { border-color: #333 !important; }
+      .pt-body { border-color: #888 !important; }
+      .pt-curse-label { color: #333 !important; }
+      .pt-curse-name { color: #111 !important; }
+      .pt-curse-name .blank-line { border-color: #333 !important; }
+      .pt-curse-desc { color: #111 !important; }
+      .pt-duration { color: #333 !important; }
+      .pt-footer-quote { color: #333 !important; }
+
+      .pt-fragment {
+        border: 2px dashed #555 !important;
+        background: #f5f5f5 !important;
+      }
+      .pt-fragment-label { color: #333 !important; }
+      .pt-fragment-label svg { fill: #333 !important; }
+      .pt-fragment-verse { color: #111 !important; }
+      .pt-fragment-code { color: #111 !important; }
+      .pt-fragment-code .rune-blank { border-color: #333 !important; color: #111 !important; }
+      .pt-fragment-note { color: #555 !important; }
+
+      .scroll-template {
+        page-break-after: always;
+        page-break-inside: avoid;
+        break-after: page;
+        break-inside: avoid;
+        max-width: 100%;
+        margin: 0;
+      }
+      .scroll-parchment {
+        border: 4px double #222 !important;
+        background: white !important;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .scroll-parchment::before { border-color: #555 !important; }
+      .scroll-parchment::after { border-color: #555 !important; }
+      .scroll-corner-bl { border-color: #555 !important; }
+      .scroll-corner-br { border-color: #555 !important; }
+      .scroll-title { color: #111 !important; }
+      .scroll-quote { color: #333 !important; }
+      .scroll-closing { color: #333 !important; }
+      .rune-pair { border-color: #ccc !important; background: #f9f9f9 !important; }
+      .rune-symbol { color: #111 !important; }
+      .rune-letter { color: #111 !important; }
+      .rune-arrow { color: #555 !important; }
+
+      .reg-sheet-wrap {
+        page-break-after: always;
+        page-break-inside: avoid;
+        break-after: page;
+        break-inside: avoid;
+      }
+      .reg-sheet {
+        border: 3px solid #222 !important;
+        background: white !important;
+        max-width: 100%;
+        margin: 0;
+      }
+      .reg-sheet::before { border-color: #555 !important; }
+      .reg-sheet::after { border-color: #555 !important; }
+      .reg-corner-bl { border-color: #555 !important; }
+      .reg-corner-br { border-color: #555 !important; }
+      .reg-title { color: #111 !important; }
+      .reg-table th { color: #111 !important; border-color: #222 !important; }
+      .reg-table td { color: #111 !important; border-color: #ccc !important; }
+      .reg-table .fill-blank { border-color: #333 !important; }
+      .reg-table .rune-box { border-color: #333 !important; }
+      .decode-section { border-color: #222 !important; }
+      .decode-label { color: #111 !important; }
+      .decode-slot .slot-box { border-color: #222 !important; color: #111 !important; }
+      .decode-slot .slot-num { color: #333 !important; }
+      .decode-word-label { color: #111 !important; }
+      .decode-word-blanks { border-color: #222 !important; }
+      .reg-footer-quote { color: #333 !important; }
+
+      .template-label { display: none !important; }
+      .section { padding: 0 !important; border: none !important; }
+      .section-title { display: none !important; }
+    }
+  </style>
+</head>
+<body class="theme-parchment">
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="top-nav flex-between no-print" aria-label="Navegação principal">
+  <a href="index.html" class="nav-brand">O Baú Amaldiçoado</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Início</a></li>
+    <li><a href="manual-do-chefe.html">Manual do Chefe</a></li>
+    <li><a href="manual-da-patrulha.html">Manual da Patrulha</a></li>
+    <li><a href="livro-das-maldicoes.html">Livro das Maldições</a></li>
+    <li><a href="modelos-impressao.html" aria-current="page" style="opacity:1; color:var(--gold-dark);">Impressão</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<header class="page-hero no-print">
+  <div class="hero-icon">
+    <svg viewBox="0 0 48 48" fill="var(--parch-dark)">
+      <path d="M38 16H10c-2.2 0-4 1.8-4 4v12h8v8h20v-8h8V20c0-2.2-1.8-4-4-4zm-4 20H14v-8h20v8zm4-14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM34 8H14v8h20V8z"/>
+    </svg>
+  </div>
+  <h1 class="display-title">Modelos de Impressão</h1>
+  <p class="subtitle">Documento IV — Templates Prontos para Imprimir</p>
+  <span class="ornament"></span>
+</header>
+
+<main class="container">
+
+  <!-- ============================================================
+       INTRODUCTION
+       ============================================================ -->
+  <section id="intro" class="section no-print">
+    <span class="section-number">Preparação</span>
+    <h2 class="section-title">Dicas de Impressão</h2>
+
+    <p style="margin-bottom:1rem;">Estes modelos foram desenhados para impressão direta. Use <strong>Ctrl+P</strong> (ou ⌘P) para imprimir — os elementos de navegação e introdução são removidos automaticamente, e cada template começa em uma nova página.</p>
+
+    <div class="tip-grid">
+      <div class="tip-card">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>
+        <h4>Papel</h4>
+        <p>Use papel kraft ou sulfite grosso (120g+). Para envelhecer: mergulhe em chá preto forte e deixe secar.</p>
+      </div>
+      <div class="tip-card">
+        <svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+        <h4>Fontes</h4>
+        <p>Os templates usam Cinzel Decorative e MedievalSharp. Se imprimir como PDF, as fontes são preservadas.</p>
+      </div>
+      <div class="tip-card">
+        <svg viewBox="0 0 24 24"><path d="M17.66 7.93L12 2.27 6.34 7.93c-3.12 3.12-3.12 8.19 0 11.31A7.98 7.98 0 0012 21.58c2.05 0 4.1-.78 5.66-2.34 3.12-3.12 3.12-8.19 0-11.31z"/></svg>
+        <h4>Envelhecimento</h4>
+        <p>Queime levemente as bordas com isqueiro. Amasse e alise o papel para textura. Enrole o pergaminho com barbante.</p>
+      </div>
+      <div class="tip-card">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <h4>Tamanho</h4>
+        <p>Os cartões são dimensionados para A5 (meia folha A4). Imprima em A4 e recorte, ou ajuste a escala.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TEMPLATE 1 — CARTÃO DE MALDIÇÃO PURA (BLANK)
+       ============================================================ -->
+  <section class="section">
+    <span class="section-number no-print">Template 4.1</span>
+    <h2 class="section-title no-print">Cartão de Maldição Pura</h2>
+
+    <div class="template-label no-print"><span>Modelo em Branco</span></div>
+
+    <div class="print-template">
+      <div class="pt-card">
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+
+        <div class="pt-header">
+          <svg viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 8C28 8 14 24 14 44c0 12 5 22 14 28v10c0 2 2 4 4 4h6v-6h4v6h8v-6h4v6h8v-6h4v6h6c2 0 4-2 4-4V72c9-6 14-16 14-28C86 24 72 8 50 8z"/>
+            <circle cx="36" cy="42" r="9" fill="var(--parch-card)"/>
+            <circle cx="64" cy="42" r="9" fill="var(--parch-card)"/>
+            <path d="M44 60l3-5h6l3 5-3 5h-6l-3-5z" fill="var(--parch-card)"/>
+          </svg>
+          <div class="pt-title">O Baú Amaldiçoado</div>
+          <div class="pt-card-number">Cartão N.º <span class="blank-field"></span></div>
+        </div>
+
+        <div class="pt-body">
+          <div class="pt-curse-label">A Maldição:</div>
+          <div class="pt-curse-name"><span class="blank-line"></span></div>
+          <div class="pt-curse-desc">
+            <span class="blank-lines">
+              <span></span><span></span><span></span><span></span><span></span>
+            </span>
+          </div>
+          <div class="pt-duration">Duração: <span class="blank-field"></span></div>
+        </div>
+
+        <div class="pt-footer-quote">
+          "Os espíritos não perdoam os desatentos."<br>
+          — Mestre Coruja
+        </div>
+      </div>
+    </div>
+
+    <!-- Example Card #2 -->
+    <div class="template-label no-print"><span>Exemplo Preenchido — Cartão #2</span></div>
+
+    <div class="print-template">
+      <div class="pt-card">
+        <span class="example-badge no-print">Exemplo</span>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+
+        <div class="pt-header">
+          <svg viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 8C28 8 14 24 14 44c0 12 5 22 14 28v10c0 2 2 4 4 4h6v-6h4v6h8v-6h4v6h8v-6h4v6h6c2 0 4-2 4-4V72c9-6 14-16 14-28C86 24 72 8 50 8z"/>
+            <circle cx="36" cy="42" r="9" fill="var(--parch-card)"/>
+            <circle cx="64" cy="42" r="9" fill="var(--parch-card)"/>
+            <path d="M44 60l3-5h6l3 5-3 5h-6l-3-5z" fill="var(--parch-card)"/>
+          </svg>
+          <div class="pt-title">O Baú Amaldiçoado</div>
+          <div class="pt-card-number">Cartão N.º 2</div>
+        </div>
+
+        <div class="pt-body">
+          <div class="pt-curse-label">A Maldição:</div>
+          <div class="pt-curse-name">"O Caranguejo das Sombras"</div>
+          <div class="pt-curse-desc">
+            Os espíritos enfeitiçaram seus pés. A partir de agora, você só pode se deslocar andando DE LADO, como um caranguejo. Nada de caminhar para frente ou para trás — apenas movimentos laterais.
+          </div>
+          <div class="pt-duration">Duração: Resto do jogo.</div>
+        </div>
+
+        <div class="pt-footer-quote">
+          "Os espíritos não perdoam os desatentos."<br>
+          — Mestre Coruja
+        </div>
+      </div>
+    </div>
+
+    <!-- Example Card #18 -->
+    <div class="template-label no-print"><span>Exemplo Preenchido — Cartão #18</span></div>
+
+    <div class="print-template">
+      <div class="pt-card">
+        <span class="example-badge no-print">Exemplo</span>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+
+        <div class="pt-header">
+          <svg viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 8C28 8 14 24 14 44c0 12 5 22 14 28v10c0 2 2 4 4 4h6v-6h4v6h8v-6h4v6h8v-6h4v6h6c2 0 4-2 4-4V72c9-6 14-16 14-28C86 24 72 8 50 8z"/>
+            <circle cx="36" cy="42" r="9" fill="var(--parch-card)"/>
+            <circle cx="64" cy="42" r="9" fill="var(--parch-card)"/>
+            <path d="M44 60l3-5h6l3 5-3 5h-6l-3-5z" fill="var(--parch-card)"/>
+          </svg>
+          <div class="pt-title">O Baú Amaldiçoado</div>
+          <div class="pt-card-number">Cartão N.º 18</div>
+        </div>
+
+        <div class="pt-body">
+          <div class="pt-curse-label">A Maldição:</div>
+          <div class="pt-curse-name">"A Gargalhada do Vilão"</div>
+          <div class="pt-curse-desc">
+            O riso de um vilão ancestral contaminou sua alma. TODA frase que você disser deve terminar com uma risada maligna e teatral. Escolha seu estilo: "MUAHAHAHÁ!" ou "HEHEHE..." ou "BUÁHÁHÁ!" — mas a risada é obrigatória. Se esquecer, repita a frase inteira com a risada incluída.
+          </div>
+          <div class="pt-duration">Duração: Resto do jogo.</div>
+        </div>
+
+        <div class="pt-footer-quote">
+          "Os espíritos não perdoam os desatentos."<br>
+          — Mestre Coruja
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TEMPLATE 2 — CARTÃO DE ENIGMA (BLANK)
+       ============================================================ -->
+  <section class="section">
+    <span class="section-number no-print">Template 4.2</span>
+    <h2 class="section-title no-print">Cartão de Enigma (com Fragmento Arcano)</h2>
+
+    <div class="template-label no-print"><span>Modelo em Branco</span></div>
+
+    <div class="print-template">
+      <div class="pt-card">
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+
+        <div class="pt-header">
+          <svg viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 5C30 5 15 22 15 45c0 25 17 42 35 50 4-2 8-5 11-9-20-5-33-22-33-41 0-22 15-38 33-40C58 6 54 5 50 5z"/>
+          </svg>
+          <div class="pt-title">O Baú Amaldiçoado</div>
+          <div class="pt-card-number">Cartão N.º <span class="blank-field"></span></div>
+        </div>
+
+        <div class="pt-body">
+          <div class="pt-curse-label">A Maldição:</div>
+          <div class="pt-curse-name"><span class="blank-line"></span></div>
+          <div class="pt-curse-desc">
+            <span class="blank-lines">
+              <span></span><span></span><span></span><span></span>
+            </span>
+          </div>
+          <div class="pt-duration">Duração: <span class="blank-field"></span></div>
+        </div>
+
+        <div class="pt-fragment">
+          <div class="pt-fragment-label">
+            <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"/></svg>
+            Fragmento Arcano <span class="blank-field"></span>
+          </div>
+          <div class="pt-fragment-verse"><span class="blank-line"></span></div>
+          <div class="pt-fragment-code">
+            Posição(ões) <span class="blank-field" style="width:2rem;"></span> do código: <span class="rune-blank"></span>
+          </div>
+          <div class="pt-fragment-note">(Anote na Folha de Registro)</div>
+        </div>
+
+        <div class="pt-footer-quote">
+          — Mestre Coruja
+        </div>
+      </div>
+    </div>
+
+    <!-- Example Card #7 with Fragment I -->
+    <div class="template-label no-print"><span>Exemplo Preenchido — Cartão #7 com Fragmento I</span></div>
+
+    <div class="print-template">
+      <div class="pt-card">
+        <span class="example-badge enigma-badge no-print">Exemplo Enigma</span>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+
+        <div class="pt-header">
+          <svg viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 5C30 5 15 22 15 45c0 25 17 42 35 50 4-2 8-5 11-9-20-5-33-22-33-41 0-22 15-38 33-40C58 6 54 5 50 5z"/>
+          </svg>
+          <div class="pt-title">O Baú Amaldiçoado</div>
+          <div class="pt-card-number">Cartão N.º 7</div>
+        </div>
+
+        <div class="pt-body">
+          <div class="pt-curse-label">A Maldição:</div>
+          <div class="pt-curse-name">"As Correntes Invisíveis"</div>
+          <div class="pt-curse-desc">
+            Uma corrente espiritual te conecta a outra alma. Escolha ou sorteie um membro da patrulha: vocês dois devem permanecer fisicamente conectados pelo pulso usando barbante ou fita. Se não houver material, mantenham contato permanente pelo dedo mindinho. Se a conexão for rompida, ambos devem gritar "AI, A CORRENTE!" dramaticamente até se reconectarem.
+          </div>
+          <div class="pt-duration">Duração: Resto do jogo.</div>
+        </div>
+
+        <div class="pt-fragment">
+          <div class="pt-fragment-label">
+            <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"/></svg>
+            Fragmento Arcano I
+          </div>
+          <div class="pt-fragment-verse">"Moldura de pedra abraça águas dormentes..."</div>
+          <div class="pt-fragment-code">
+            Posição <strong>1</strong> do código: <span class="rune-blank">☽</span>
+          </div>
+          <div class="pt-fragment-note">(Anote este símbolo e sua posição na Folha de Registro)</div>
+        </div>
+
+        <div class="pt-footer-quote">
+          — Mestre Coruja
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TEMPLATE 3 — PERGAMINHO DE DECIFRAÇÃO
+       ============================================================ -->
+  <section class="section">
+    <span class="section-number no-print">Template 4.3</span>
+    <h2 class="section-title no-print">Pergaminho de Decifração — O Alfabeto das Trevas</h2>
+
+    <div class="scroll-template print-template">
+      <div class="scroll-parchment">
+        <div class="scroll-corner-bl"></div>
+        <div class="scroll-corner-br"></div>
+
+        <!-- Title -->
+        <div style="text-align:center;">
+          <svg width="40" height="40" viewBox="0 0 100 100" fill="var(--parch-dark)" style="opacity:.3; margin-bottom:.5rem;">
+            <path d="M50 8C28 8 14 24 14 44c0 12 5 22 14 28v10c0 2 2 4 4 4h6v-6h4v6h8v-6h4v6h8v-6h4v6h6c2 0 4-2 4-4V72c9-6 14-16 14-28C86 24 72 8 50 8z"/>
+            <circle cx="36" cy="42" r="9" fill="var(--parch-card)"/>
+            <circle cx="64" cy="42" r="9" fill="var(--parch-card)"/>
+            <path d="M44 60l3-5h6l3 5-3 5h-6l-3-5z" fill="var(--parch-card)"/>
+          </svg>
+        </div>
+        <div class="scroll-title">O Alfabeto das Trevas</div>
+        <span class="scroll-subtitle-line"></span>
+
+        <!-- Opening quote -->
+        <div class="scroll-quote">
+          "Somente os olhos dos amaldiçoados<br>
+          podem ler as runas dos antigos."
+        </div>
+
+        <!-- Ornament -->
+        <div class="scroll-ornament">
+          <span>─── ☽ ───</span>
+          <span>◆</span>
+          <span>─── ★ ───</span>
+        </div>
+
+        <!-- Rune grid — arranged in a scattered manuscript style -->
+        <div class="rune-grid">
+          <div class="rune-pair">
+            <span class="rune-symbol">★</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">M</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">⚔</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">I</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">☠</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">T</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">≈</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">N</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">☽</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">P</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">Ψ</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">O</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">⊕</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">E</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">⚡</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">S</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">∞</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">R</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">△</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">A</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">Ω</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">L</span>
+          </div>
+          <div class="rune-pair">
+            <span class="rune-symbol">◆</span>
+            <span class="rune-arrow">traduz-se</span>
+            <span class="rune-letter">C</span>
+          </div>
+        </div>
+
+        <!-- Ornament -->
+        <div class="scroll-ornament">
+          <span>─── ⊕ ───</span>
+          <span>☠</span>
+          <span>─── ∞ ───</span>
+        </div>
+
+        <!-- Closing -->
+        <div class="scroll-closing">
+          "Organize as runas. Leia a verdade.<br>
+          O tesouro aguarda os que persistem."
+          <span class="attribution">— Mestre Coruja</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TEMPLATE 4 — FOLHA DE REGISTRO DOS FRAGMENTOS
+       ============================================================ -->
+  <section class="section">
+    <span class="section-number no-print">Template 4.4</span>
+    <h2 class="section-title no-print">Folha de Registro dos Fragmentos</h2>
+
+    <div class="reg-sheet-wrap print-template">
+      <div class="reg-sheet">
+        <div class="reg-corner-bl"></div>
+        <div class="reg-corner-br"></div>
+
+        <!-- Header -->
+        <div style="text-align:center; margin-bottom:.25rem;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--parch-dark)" style="opacity:.3;">
+            <polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"/>
+          </svg>
+        </div>
+        <div class="reg-title">Registro dos Fragmentos Arcanos</div>
+        <span class="reg-title-line"></span>
+
+        <!-- Fragment table -->
+        <table class="reg-table">
+          <thead>
+            <tr>
+              <th>Fragmento</th>
+              <th>Posição(ões)</th>
+              <th>Símbolo Rúnico</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="frag-num">Fragmento I</td>
+              <td><span class="fill-blank"></span></td>
+              <td><span class="rune-box"></span></td>
+            </tr>
+            <tr>
+              <td class="frag-num">Fragmento II</td>
+              <td><span class="fill-blank"></span></td>
+              <td><span class="rune-box"></span></td>
+            </tr>
+            <tr>
+              <td class="frag-num">Fragmento III</td>
+              <td><span class="fill-blank"></span></td>
+              <td><span class="rune-box"></span></td>
+            </tr>
+            <tr>
+              <td class="frag-num">Fragmento IV</td>
+              <td><span class="fill-blank"></span></td>
+              <td><span class="rune-box"></span></td>
+            </tr>
+            <tr>
+              <td class="frag-num">Fragmento V</td>
+              <td><span class="fill-blank" style="min-width:4.5rem;"></span></td>
+              <td><span class="rune-box"></span> <span class="rune-box"></span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Decoding section -->
+        <div class="decode-section">
+          <div class="decode-label">Decodificação</div>
+
+          <div class="decode-slots">
+            <div class="decode-slot">
+              <div class="slot-box"></div>
+              <span class="slot-num">1</span>
+            </div>
+            <div class="decode-slot">
+              <div class="slot-box"></div>
+              <span class="slot-num">2</span>
+            </div>
+            <div class="decode-slot">
+              <div class="slot-box"></div>
+              <span class="slot-num">3</span>
+            </div>
+            <div class="decode-slot">
+              <div class="slot-box"></div>
+              <span class="slot-num">4</span>
+            </div>
+            <div class="decode-slot">
+              <div class="slot-box"></div>
+              <span class="slot-num">5</span>
+            </div>
+            <div class="decode-slot">
+              <div class="slot-box"></div>
+              <span class="slot-num">6</span>
+            </div>
+            <div class="decode-slot">
+              <div class="slot-box"></div>
+              <span class="slot-num">7</span>
+            </div>
+          </div>
+
+          <div class="decode-word">
+            <div class="decode-word-label">A Palavra Maldita:</div>
+            <span class="decode-word-blanks"></span>
+          </div>
+        </div>
+
+        <!-- Footer quote -->
+        <div class="reg-footer-quote">
+          "Decifrem a palavra. Encontrem o local.<br>
+          Quebrem a maldição. Sempre Alerta."<br>
+          — Mestre Coruja
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FORMATTING TIPS
+       ============================================================ -->
+  <section id="dicas-formatacao" class="section no-print">
+    <span class="section-number">Referência</span>
+    <h2 class="section-title">Dicas de Formatação</h2>
+
+    <ul class="tips-list">
+      <li><strong>Cartões de maldição:</strong> Imprima em papel kraft ou sulfite grosso. Recorte no tamanho A5 ou ¼ de A4. Dobre ao meio para caber em envelopes pardos.</li>
+      <li><strong>Envelhecimento do papel:</strong> Prepare chá preto bem forte (3-4 saquinhos). Mergulhe o papel por 2-3 minutos, depois deixe secar sobre jornal. Para manchas irregulares, borrife o chá com um spray.</li>
+      <li><strong>Bordas queimadas:</strong> Com cuidado e supervisão, passe um isqueiro rapidamente pelas bordas do papel seco. Faça isso sobre pia ou superfície não-inflamável. O resultado é dramático e vale a pena!</li>
+      <li><strong>Pergaminho de decifração:</strong> Imprima em página inteira, envelheça com chá, enrole como pergaminho e amarre com barbante rústico ou fita de tecido. Coloque visível no topo do baú.</li>
+      <li><strong>Folha de registro:</strong> Imprima em papel mais claro (para facilitar a escrita). Inclua uma caneta ou lápis dentro do baú junto com a folha.</li>
+      <li><strong>Símbolos rúnicos:</strong> Se quiser efeito artesanal, redesenhe os símbolos à mão com caneta marcador preta grossa. Símbolos grandes (2cm+) são mais fáceis de ler ao ar livre.</li>
+      <li><strong>Tinta e cores:</strong> Preto para o texto principal, vermelho escuro para nomes de maldições. Se tiver acesso a caneta dourada, use para destacar os fragmentos arcanos.</li>
+      <li><strong>Impressão seletiva:</strong> Use o botão de imprimir do navegador — apenas os templates aparecerão, cada um em sua própria página. Elementos de navegação e introdução são removidos automaticamente.</li>
+    </ul>
+
+    <div class="info-box tip" style="margin-top:2rem;">
+      <svg class="box-icon" viewBox="0 0 20 20" fill="#2ecc71"><path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm-1 15l-4-4 1.41-1.41L9 12.17l5.59-5.59L16 8l-7 7z"/></svg>
+      <strong>Dica do Mestre Coruja:</strong> Prepare os materiais com antecedência — o envelhecimento do papel leva pelo menos 2-3 horas para secar completamente. Faça isso na véspera do jogo!
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="page-footer no-print">
+  O Baú Amaldiçoado: A Relíquia das Sombras — Tropa Sênior — Sempre Alerta!
+</footer>
+
+</body>
+</html>
