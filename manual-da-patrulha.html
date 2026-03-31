@@ -405,26 +405,32 @@
     @media print {
       .stars-layer, .crescent-moon { display: none !important; }
       body, body::before { background: white !important; }
+      .page-hero .display-title { font-size: 42pt !important; }
+      .page-hero .subtitle { font-size: 26pt !important; }
+      .intro-text { font-size: 24pt !important; line-height: 1.5 !important; }
+      .intro-warning { font-size: 22pt !important; }
       .rule-card {
         break-inside: avoid;
         page-break-inside: avoid;
         page-break-after: always;
         break-after: page;
-        border: 2px solid #444 !important;
+        border: 4px solid #444 !important;
         background: white !important;
         color: black !important;
-        padding: 2rem;
-        min-height: calc(100vh - 3cm);
+        padding: 1.2cm 1.5cm;
+        height: calc(100vh - 1.5cm);
         display: flex;
         flex-direction: column;
+        justify-content: center;
       }
       .rule-card::before, .rule-card::after { display: none; }
-      .rule-num { color: #ccc !important; font-size: 8vw; line-height: 1; }
-      .rule-title { color: #111 !important; font-size: 28pt; }
-      .rule-subtitle { color: #555 !important; font-size: 18pt; }
-      .rule-body { color: #222 !important; font-size: 22pt; line-height: 1.7; flex: 1; }
-      .rule-body ul { color: #222 !important; font-size: 20pt; line-height: 1.7; }
-      .rule-body p { margin-bottom: .5rem; }
+      .rule-num { color: #ccc !important; font-size: 14vw; line-height: 1; }
+      .rule-title { color: #111 !important; font-size: 38pt !important; margin-bottom: .4cm; }
+      .rule-subtitle { color: #555 !important; font-size: 24pt !important; margin-bottom: .6cm; }
+      .rule-body { color: #222 !important; font-size: 28pt !important; line-height: 1.5 !important; flex: 1; }
+      .rule-body ul { color: #222 !important; font-size: 26pt !important; line-height: 1.5 !important; }
+      .rule-body li { font-size: 26pt !important; line-height: 1.5 !important; }
+      .rule-body p { margin-bottom: .5rem; font-size: 28pt !important; }
       .rule-icon { opacity: .2; }
       .oath-frame {
         page-break-before: always;
@@ -432,13 +438,20 @@
         border-color: #888 !important;
         background: #f8f8f8 !important;
         box-shadow: none !important;
+        height: calc(100vh - 1.5cm);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1.5cm !important;
       }
-      .oath-text, .oath-label { color: #333 !important; }
+      .oath-label { color: #333 !important; font-size: 30pt !important; }
+      .oath-text { color: #333 !important; font-size: 26pt !important; line-height: 1.5 !important; }
       .final-warning {
         background: #f8f8f8 !important;
         border-color: #888 !important;
+        padding: 1.2cm !important;
       }
-      .final-warning-text { color: #333 !important; }
+      .final-warning-text { color: #333 !important; font-size: 26pt !important; line-height: 1.5 !important; }
     }
   </style>
 </head>

@@ -337,14 +337,30 @@
 
     @media print {
       body { background: white !important; background-image: none !important; }
-      .section { break-inside: avoid; }
-      .styled-table { font-size: 9pt; }
-      .result-display { gap: .4rem; }
-      .result-letter { width: 44px; height: 54px; border-color: #888 !important; background: #f5f5f5 !important; }
-      .result-letter .r-char { font-size: 1.1rem; color: #222 !important; }
-      .result-letter .r-rune { color: #555 !important; }
+      .page-hero .display-title { font-size: 42pt !important; }
+      .page-hero .subtitle { font-size: 26pt !important; }
+      .section { break-inside: avoid; page-break-inside: avoid; }
+      .section-title { font-size: 30pt !important; }
+      .section-number { font-size: 18pt !important; }
+      .section p, .section li { font-size: 24pt !important; line-height: 1.5 !important; }
+      .lore-block { font-size: 22pt !important; line-height: 1.5 !important; }
+      .lore-title { font-size: 26pt !important; }
+      .lore-instruction { font-size: 22pt !important; }
+      .styled-table { font-size: 20pt !important; }
+      .styled-table th { font-size: 18pt !important; }
+      .styled-table td { font-size: 20pt !important; }
+      .checklist li { font-size: 22pt !important; line-height: 1.5 !important; padding: .8rem 0 .8rem 3rem; }
+      .checklist li strong { font-size: 22pt !important; }
+      .setup-steps li { font-size: 22pt !important; line-height: 1.5 !important; }
+      .result-display { gap: .6rem; }
+      .result-letter { width: 56px; height: 68px; border-color: #888 !important; background: #f5f5f5 !important; }
+      .result-letter .r-char { font-size: 1.4rem; color: #222 !important; }
+      .result-letter .r-rune { color: #555 !important; font-size: 1.4rem; }
+      .rune-table .rune-cell { font-size: 2.2rem !important; }
+      .rune-table .letter-cell { font-size: 1.6rem !important; }
       .deco-moon, .deco-star { display: none !important; }
       .checklist li::before { border-color: #666 !important; }
+      .info-box { font-size: 22pt !important; line-height: 1.5 !important; }
     }
 
     @media (max-width: 600px) {
