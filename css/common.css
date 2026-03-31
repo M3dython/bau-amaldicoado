@@ -542,9 +542,9 @@ h4 { font-size: 1.1rem; }
 
 /* ---------- Print Styles ---------- */
 @media print {
-  @page { margin: 1.2cm; size: A4; }
+  @page { margin: 1cm; size: A4; }
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
-  body { font-size: 11pt !important; }
+  body { font-size: 14pt !important; }
   .top-nav, .no-print, .back-to-top, .filter-bar { display: none !important; }
   .page-hero { padding: .8cm 0; }
   .ornament { background: linear-gradient(90deg, transparent, #999, transparent); }
@@ -555,7 +555,7 @@ h4 { font-size: 1.1rem; }
   .lore-block { break-inside: avoid; }
   .info-box { break-inside: avoid; }
 
-  /* --- Curse Cards: each on its own A4 page --- */
+  /* --- Curse Cards: each on its own A4 page, LARGE readable fonts --- */
   .curse-card {
     break-inside: avoid;
     page-break-inside: avoid;
@@ -564,21 +564,22 @@ h4 { font-size: 1.1rem; }
     box-shadow: none !important;
     transform: none !important;
     margin: 0;
-    border-width: 3px;
-    border-radius: 16px;
-    padding: 2rem 2.5rem;
+    border-width: 4px;
+    border-radius: 20px;
+    padding: 2.5rem 3rem;
     min-height: calc(100vh - 3cm);
     display: flex;
     flex-direction: column;
+    justify-content: center;
   }
-  .curse-card .card-top { margin-bottom: 1.5rem; }
-  .curse-card .card-number { font-size: 3.5rem; opacity: .25; }
-  .curse-card .curse-name { font-size: 1.6rem; margin-bottom: 1.2rem; padding-bottom: .8rem; }
-  .curse-card .curse-desc { font-size: 1.2rem; line-height: 2; flex: 1; }
-  .curse-card .curse-example { font-size: 1.05rem; }
-  .curse-card .duration { font-size: 1rem; padding: .5rem 1.5rem; margin-top: auto; }
-  .curse-card .card-badge { font-size: .9rem; padding: .35rem 1rem; }
-  .curse-card::before { height: 6px; }
+  .curse-card .card-top { margin-bottom: 2rem; }
+  .curse-card .card-number { font-size: 5rem; opacity: .18; }
+  .curse-card .curse-name { font-size: 2.2rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom-width: 3px; }
+  .curse-card .curse-desc { font-size: 1.55rem; line-height: 2.1; flex: 1; }
+  .curse-card .curse-example { font-size: 1.3rem; line-height: 2; border-left-width: 3px; padding-left: 1.2rem; margin-bottom: 1.5rem; }
+  .curse-card .duration { font-size: 1.2rem; padding: .6rem 2rem; margin-top: auto; border-width: 2px; }
+  .curse-card .card-badge { font-size: 1.05rem; padding: .4rem 1.2rem; border-width: 2px; }
+  .curse-card::before { height: 8px; }
 
   /* Preserve category colors on print */
   .cat-communication { border-color: #9b59b6 !important; }
@@ -616,11 +617,12 @@ h4 { font-size: 1.1rem; }
   .curse-card.enigma::before { background: linear-gradient(90deg, #8a6d21, #c9a84c, #8a6d21) !important; }
   .curse-card.enigma::after { display: none; }
   .enigma-fragment { background: #fdf6e3 !important; border: 2px dashed #b8860b !important; padding: 1.5rem; margin-top: 1.5rem; }
-  .enigma-label { color: #8a6d21 !important; font-size: 1rem; }
-  .enigma-verse { color: #6d5a1e !important; font-size: 1.15rem; }
-  .enigma-code { color: #333 !important; font-size: 1.1rem; }
-  .rune { text-shadow: none; color: #8a6d21 !important; font-size: 2rem; }
-  .enigma-note { color: #666 !important; }
+  .enigma-fragment { padding: 2rem; margin-top: 2rem; }
+  .enigma-label { color: #8a6d21 !important; font-size: 1.3rem; }
+  .enigma-verse { color: #6d5a1e !important; font-size: 1.4rem; line-height: 1.9; }
+  .enigma-code { color: #333 !important; font-size: 1.35rem; }
+  .rune { text-shadow: none; color: #8a6d21 !important; font-size: 2.8rem; }
+  .enigma-note { color: #666 !important; font-size: 1.1rem; }
 
   /* Non-card print pages */
   .curse-card:last-child { page-break-after: auto; }

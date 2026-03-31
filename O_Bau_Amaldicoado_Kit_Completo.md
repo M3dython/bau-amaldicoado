@@ -703,9 +703,9 @@ Quem usar a palavra original no lugar da inventada recebe um "SHHH!" coletivo da
 
 ### Cartao 36
 
-**A MALDICAO: "O VAMPIRO SOLAR"**
+**A MALDICAO: "O VAMPIRO DA NOITE"**
 
-A luz do sol se tornou seu veneno! Sempre que estiver em uma area iluminada diretamente pelo sol, voce deve proteger o rosto com as maos ou um pano e soltar gemidos dramaticos de dor ("Ai! A luz! Ela queima!"). Procure se mover sempre pelas sombras. Se nao houver sombra disponivel, desloque-se AGACHADO e protegendo os olhos.
+Qualquer luz artificial se tornou seu veneno mortal! Lanternas, velas, fogueiras, celulares, postes — TUDO queima sua pele amaldicoada. Sempre que uma fonte de luz artificial estiver proxima, voce deve proteger o rosto com as maos ou um pano e soltar gemidos dramaticos de dor ("AAAI! A LUZ! ELA QUEIMA!"). Desvie, fuja, esconda-se. A UNICA luz que nao te fere e a luz da lua — seu refugio. Procure sempre ficar na penumbra ou sob o luar. Se for inevitavel passar por uma area iluminada, desloque-se AGACHADO e protegendo os olhos, o mais rapido possivel.
 
 *Duracao: Resto do jogo.*
 

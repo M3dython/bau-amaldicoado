@@ -678,7 +678,7 @@
       }
 
       body {
-        font-size: 11pt !important;
+        font-size: 14pt !important;
         background: white !important;
         color: black !important;
         background-image: none !important;
@@ -709,12 +709,26 @@
       }
 
       .pt-card {
-        border: 3px solid #222 !important;
+        border: 4px solid #222 !important;
         background: white !important;
         box-shadow: none !important;
-        min-height: auto;
-        padding: 2rem 1.5rem 1.5rem;
+        min-height: calc(100vh - 3cm);
+        padding: 2.5rem 2.5rem 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
+      .pt-title { font-size: 1.8rem !important; }
+      .pt-card-number { font-size: 1.3rem !important; }
+      .pt-curse-label { font-size: 1.2rem !important; }
+      .pt-curse-name { font-size: 1.7rem !important; }
+      .pt-curse-desc { font-size: 1.4rem !important; line-height: 2 !important; }
+      .pt-duration { font-size: 1.2rem !important; }
+      .pt-footer-quote { font-size: 1.1rem !important; }
+      .pt-fragment-label { font-size: 1.2rem !important; }
+      .pt-fragment-verse { font-size: 1.3rem !important; }
+      .pt-fragment-code { font-size: 1.3rem !important; }
+      .pt-fragment-note { font-size: 1rem !important; }
       .pt-card::before { border-color: #555 !important; }
       .pt-card::after { border-color: #555 !important; }
       .pt-card .corner-bl { border-color: #555 !important; }
@@ -758,7 +772,14 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding: 3rem !important;
       }
+      .scroll-title { font-size: 2rem !important; }
+      .scroll-quote { font-size: 1.3rem !important; }
+      .scroll-closing { font-size: 1.3rem !important; }
+      .rune-symbol { font-size: 3.2rem !important; }
+      .rune-letter { font-size: 2rem !important; }
+      .rune-arrow { font-size: 1.6rem !important; }
       .scroll-parchment::before { border-color: #555 !important; }
       .scroll-parchment::after { border-color: #555 !important; }
       .scroll-corner-bl { border-color: #555 !important; }
@@ -782,7 +803,20 @@
         background: white !important;
         max-width: 100%;
         margin: 0;
+        padding: 2.5rem !important;
+        min-height: calc(100vh - 3cm);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
+      .reg-title { font-size: 1.8rem !important; }
+      .reg-table th { font-size: 1.2rem !important; }
+      .reg-table td { font-size: 1.2rem !important; }
+      .decode-label { font-size: 1.3rem !important; }
+      .decode-slot .slot-box { width: 60px !important; height: 60px !important; font-size: 1.5rem !important; }
+      .decode-slot .slot-num { font-size: 1.1rem !important; }
+      .decode-word-label { font-size: 1.3rem !important; }
+      .reg-footer-quote { font-size: 1.1rem !important; }
       .reg-sheet::before { border-color: #555 !important; }
       .reg-sheet::after { border-color: #555 !important; }
       .reg-corner-bl { border-color: #555 !important; }
