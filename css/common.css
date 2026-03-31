@@ -657,22 +657,47 @@ h4 { font-size: 1.1rem; }
   .cat-collective .curse-name { color: #9a7d0a !important; }
   .cat-collective .card-badge { background: #fef9e0 !important; color: #9a7d0a !important; border-color: #f7dc6f !important; }
 
-  /* Enigma cards: gold, massive fragments */
-  .curse-card.enigma { border-color: #b8860b !important; background: #fffdf0 !important; }
+  /* Enigma cards: gold — fit curse + fragment on ONE page */
+  .curse-card.enigma {
+    border-color: #b8860b !important;
+    background: #fffdf0 !important;
+    padding: .5cm .8cm;
+    justify-content: space-between;
+  }
   .curse-card.enigma::before { background: linear-gradient(90deg, #8a6d21, #c9a84c, #8a6d21) !important; }
   .curse-card.enigma::after { display: none; }
+  .curse-card.enigma .card-top { margin-bottom: .3cm; }
+  .curse-card.enigma .card-number { font-size: 8vw; }
+  .curse-card.enigma .card-badge { font-size: 16pt !important; padding: .3rem 1rem; }
+  .curse-card.enigma .curse-name {
+    font-size: 28pt !important;
+    margin-bottom: .3cm;
+    padding-bottom: .2cm;
+    border-bottom-width: 3px;
+  }
+  .curse-card.enigma .curse-desc {
+    font-size: 20pt !important;
+    line-height: 1.35 !important;
+    flex: 0 1 auto;
+  }
+  .curse-card.enigma .duration {
+    font-size: 18pt !important;
+    padding: .4rem 1.5rem;
+    margin-top: .2cm;
+    margin-bottom: .2cm;
+  }
   .enigma-fragment {
     background: #fdf6e3 !important;
-    border: 4px dashed #b8860b !important;
-    padding: .8cm;
-    margin-top: .6cm;
-    border-radius: 12px;
+    border: 3px dashed #b8860b !important;
+    padding: .4cm .6cm;
+    margin-top: .3cm;
+    border-radius: 10px;
   }
-  .enigma-label { color: #6d5500 !important; font-size: 26pt !important; font-weight: 900; }
-  .enigma-verse { color: #5a4a10 !important; font-size: 28pt !important; line-height: 1.5; }
-  .enigma-code { color: #222 !important; font-size: 28pt !important; }
-  .rune { text-shadow: none; color: #6d5500 !important; font-size: 54pt !important; }
-  .enigma-note { color: #555 !important; font-size: 20pt !important; }
+  .enigma-label { color: #6d5500 !important; font-size: 20pt !important; font-weight: 900; }
+  .enigma-verse { color: #5a4a10 !important; font-size: 22pt !important; line-height: 1.3; }
+  .enigma-code { color: #222 !important; font-size: 22pt !important; line-height: 1.3; }
+  .rune { text-shadow: none; color: #6d5500 !important; font-size: 40pt !important; }
+  .enigma-note { color: #555 !important; font-size: 16pt !important; }
 
   /* Non-card print pages */
   .curse-card:last-child { page-break-after: auto; }
