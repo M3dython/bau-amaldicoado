@@ -839,6 +839,16 @@
       .template-label { display: none !important; }
       .section { padding: 0 !important; border: none !important; }
       .section-title { display: none !important; }
+
+      .pt-card .print-fit,
+      .scroll-parchment .print-fit,
+      .reg-sheet .print-fit {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -1379,6 +1389,54 @@
 <footer class="page-footer no-print">
   O Baú Amaldiçoado: A Relíquia das Sombras — Tropa Sênior — Sempre Alerta!
 </footer>
+
+<!-- Dynamic print scaling — zoom each template to fit one page -->
+<script>
+(function() {
+  var CARDS = '.pt-card, .scroll-parchment, .reg-sheet';
+  var wrapped = false;
+
+  function wrapCards() {
+    if (wrapped) return;
+    document.querySelectorAll(CARDS).forEach(function(card) {
+      var inner = document.createElement('div');
+      inner.className = 'print-fit';
+      while (card.firstChild) inner.appendChild(card.firstChild);
+      card.appendChild(inner);
+    });
+    wrapped = true;
+  }
+
+  function fitCards() {
+    wrapCards();
+    document.querySelectorAll(CARDS).forEach(function(card) {
+      var inner = card.querySelector('.print-fit');
+      inner.style.zoom = '';
+      inner.style.height = 'auto';
+      void inner.offsetHeight;
+
+      var contentH = inner.scrollHeight;
+      var availH = card.clientHeight;
+
+      inner.style.height = '100%';
+
+      if (contentH > availH && availH > 0) {
+        inner.style.zoom = String(Math.floor((availH / contentH) * 100) / 100);
+      }
+    });
+  }
+
+  function resetCards() {
+    document.querySelectorAll(CARDS + ', ' + CARDS).forEach(function(card) {
+      var inner = card.querySelector('.print-fit');
+      if (inner) inner.style.zoom = '';
+    });
+  }
+
+  window.addEventListener('beforeprint', fitCards);
+  window.addEventListener('afterprint', resetCards);
+})();
+</script>
 
 </body>
 </html>

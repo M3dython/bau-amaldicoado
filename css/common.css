@@ -523,6 +523,9 @@ h4 { font-size: 1.1rem; }
 .mb-lg { margin-bottom: 2rem; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
+/* ---------- Print-fit wrapper (JS-created) ---------- */
+.print-fit { display: contents; }
+
 /* ---------- Animations ---------- */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -563,6 +566,8 @@ h4 { font-size: 1.1rem; }
 
   /* =============================================================
      CURSE CARDS — MASSIVE TEXT, one per A4, fills the whole page
+     JS handles dynamic zoom so every card fits one page.
+     These are the IDEAL MAX sizes — JS scales down if needed.
      ============================================================= */
   .curse-card {
     break-inside: avoid;
@@ -580,6 +585,14 @@ h4 { font-size: 1.1rem; }
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
+  }
+  /* Inner wrapper created by JS — invisible on screen, flex container on print */
+  .print-fit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
   }
   .curse-card .card-top {
     margin-bottom: .6cm;
@@ -600,27 +613,27 @@ h4 { font-size: 1.1rem; }
     height: 28px;
   }
   .curse-card .curse-name {
-    font-size: 38pt !important;
-    margin-bottom: .4cm;
+    font-size: 42pt !important;
+    margin-bottom: .5cm;
     padding-bottom: .3cm;
     border-bottom: 5px solid;
     line-height: 1.2;
   }
   .curse-card .curse-desc {
-    font-size: 26pt !important;
-    line-height: 1.4 !important;
+    font-size: 30pt !important;
+    line-height: 1.45 !important;
     flex: 1;
   }
   .curse-card .curse-example {
-    font-size: 20pt !important;
-    line-height: 1.35 !important;
+    font-size: 24pt !important;
+    line-height: 1.4 !important;
     border-left: 5px solid #999;
     padding-left: .8cm;
     margin: .3cm 0;
   }
   .curse-card .duration {
-    font-size: 22pt !important;
-    padding: .5rem 2rem;
+    font-size: 24pt !important;
+    padding: .6rem 2.5rem;
     margin-top: auto;
     border-width: 3px;
     font-weight: 700;
@@ -658,48 +671,22 @@ h4 { font-size: 1.1rem; }
   .cat-collective .curse-name { color: #9a7d0a !important; }
   .cat-collective .card-badge { background: #fef9e0 !important; color: #9a7d0a !important; border-color: #f7dc6f !important; }
 
-  /* Enigma cards: gold — fit curse + fragment on ONE page */
-  .curse-card.enigma {
-    border-color: #b8860b !important;
-    background: #fffdf0 !important;
-    padding: .4cm .7cm;
-    justify-content: center;
-    overflow: hidden;
-  }
+  /* Enigma cards: gold colors — sizes same as normal cards, JS zoom handles fit */
+  .curse-card.enigma { border-color: #b8860b !important; background: #fffdf0 !important; }
   .curse-card.enigma::before { background: linear-gradient(90deg, #8a6d21, #c9a84c, #8a6d21) !important; }
   .curse-card.enigma::after { display: none; }
-  .curse-card.enigma .card-top { margin-bottom: .2cm; }
-  .curse-card.enigma .card-number { font-size: 6vw; }
-  .curse-card.enigma .card-badge { font-size: 14pt !important; padding: .2rem .8rem; }
-  .curse-card.enigma .curse-name {
-    font-size: 24pt !important;
-    margin-bottom: .2cm;
-    padding-bottom: .15cm;
-    border-bottom-width: 3px;
-  }
-  .curse-card.enigma .curse-desc {
-    font-size: 17pt !important;
-    line-height: 1.3 !important;
-    flex: 0 1 auto;
-  }
-  .curse-card.enigma .duration {
-    font-size: 15pt !important;
-    padding: .3rem 1.2rem;
-    margin-top: .15cm;
-    margin-bottom: .15cm;
-  }
   .enigma-fragment {
     background: #fdf6e3 !important;
-    border: 3px dashed #b8860b !important;
-    padding: .3cm .5cm;
-    margin-top: .2cm;
-    border-radius: 10px;
+    border: 4px dashed #b8860b !important;
+    padding: .5cm .7cm;
+    margin-top: .4cm;
+    border-radius: 12px;
   }
-  .enigma-label { color: #6d5500 !important; font-size: 17pt !important; font-weight: 900; }
-  .enigma-verse { color: #5a4a10 !important; font-size: 19pt !important; line-height: 1.25; }
-  .enigma-code { color: #222 !important; font-size: 18pt !important; line-height: 1.25; }
-  .rune { text-shadow: none; color: #6d5500 !important; font-size: 32pt !important; }
-  .enigma-note { color: #555 !important; font-size: 14pt !important; }
+  .enigma-label { color: #6d5500 !important; font-size: 24pt !important; font-weight: 900; }
+  .enigma-verse { color: #5a4a10 !important; font-size: 26pt !important; line-height: 1.35; }
+  .enigma-code { color: #222 !important; font-size: 24pt !important; line-height: 1.35; }
+  .rune { text-shadow: none; color: #6d5500 !important; font-size: 44pt !important; }
+  .enigma-note { color: #555 !important; font-size: 18pt !important; }
 
   /* Non-card print pages */
   .curse-card:last-child { page-break-after: auto; }
