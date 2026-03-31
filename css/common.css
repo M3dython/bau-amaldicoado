@@ -542,20 +542,22 @@ h4 { font-size: 1.1rem; }
 
 /* ---------- Print Styles ---------- */
 @media print {
-  @page { margin: 1cm; size: A4; }
+  @page { margin: .8cm; size: A4; }
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
-  body { font-size: 14pt !important; }
+  body { font-size: 18pt !important; }
   .top-nav, .no-print, .back-to-top, .filter-bar { display: none !important; }
-  .page-hero { padding: .8cm 0; }
+  .page-hero { padding: .5cm 0; }
   .ornament { background: linear-gradient(90deg, transparent, #999, transparent); }
   .ornament::before { color: #999; background: white; }
   a { text-decoration: none !important; }
   .container, .container-wide { max-width: 100%; padding: 0; }
   .cards-grid { display: block; }
-  .lore-block { break-inside: avoid; }
-  .info-box { break-inside: avoid; }
+  .lore-block { break-inside: avoid; font-size: 16pt; }
+  .info-box { break-inside: avoid; font-size: 15pt; }
 
-  /* --- Curse Cards: each on its own A4 page, LARGE readable fonts --- */
+  /* =============================================================
+     CURSE CARDS — MASSIVE TEXT, one per A4, fills the whole page
+     ============================================================= */
   .curse-card {
     break-inside: avoid;
     page-break-inside: avoid;
@@ -564,65 +566,106 @@ h4 { font-size: 1.1rem; }
     box-shadow: none !important;
     transform: none !important;
     margin: 0;
-    border-width: 4px;
-    border-radius: 20px;
-    padding: 2.5rem 3rem;
-    min-height: calc(100vh - 3cm);
+    border-width: 5px;
+    border-radius: 24px;
+    padding: 1.2cm 1.5cm;
+    height: calc(100vh - 2cm);
     display: flex;
     flex-direction: column;
-    justify-content: center;
   }
-  .curse-card .card-top { margin-bottom: 2rem; }
-  .curse-card .card-number { font-size: 5rem; opacity: .18; }
-  .curse-card .curse-name { font-size: 2.2rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom-width: 3px; }
-  .curse-card .curse-desc { font-size: 1.55rem; line-height: 2.1; flex: 1; }
-  .curse-card .curse-example { font-size: 1.3rem; line-height: 2; border-left-width: 3px; padding-left: 1.2rem; margin-bottom: 1.5rem; }
-  .curse-card .duration { font-size: 1.2rem; padding: .6rem 2rem; margin-top: auto; border-width: 2px; }
-  .curse-card .card-badge { font-size: 1.05rem; padding: .4rem 1.2rem; border-width: 2px; }
-  .curse-card::before { height: 8px; }
+  .curse-card .card-top {
+    margin-bottom: 1.2cm;
+    align-items: center;
+  }
+  .curse-card .card-number {
+    font-size: 9vw;
+    opacity: .12;
+    line-height: 1;
+  }
+  .curse-card .card-badge {
+    font-size: 18pt;
+    padding: .5rem 1.5rem;
+    border-width: 2px;
+  }
+  .curse-card .card-badge svg {
+    width: 22px;
+    height: 22px;
+  }
+  .curse-card .curse-name {
+    font-size: 30pt;
+    margin-bottom: .8cm;
+    padding-bottom: .5cm;
+    border-bottom: 4px solid;
+    line-height: 1.3;
+  }
+  .curse-card .curse-desc {
+    font-size: 22pt;
+    line-height: 1.7;
+    flex: 1;
+  }
+  .curse-card .curse-example {
+    font-size: 18pt;
+    line-height: 1.7;
+    border-left: 4px solid #999;
+    padding-left: 1cm;
+    margin: .5cm 0;
+  }
+  .curse-card .duration {
+    font-size: 20pt;
+    padding: .6rem 2.5rem;
+    margin-top: auto;
+    border-width: 3px;
+    font-weight: 700;
+  }
+  .curse-card::before { height: 10px; }
 
   /* Preserve category colors on print */
   .cat-communication { border-color: #9b59b6 !important; }
   .cat-communication::before { background: #9b59b6 !important; }
-  .cat-communication .curse-name { color: #7d3c98 !important; }
-  .cat-communication .card-badge { background: #f0e6f6 !important; color: #7d3c98 !important; border: 1px solid #c39bd3 !important; }
+  .cat-communication .curse-name { color: #6c3483 !important; }
+  .cat-communication .card-badge { background: #f0e6f6 !important; color: #6c3483 !important; border-color: #c39bd3 !important; }
 
   .cat-movement { border-color: #e67e22 !important; }
   .cat-movement::before { background: #e67e22 !important; }
-  .cat-movement .curse-name { color: #ca6f1e !important; }
-  .cat-movement .card-badge { background: #fef0e0 !important; color: #ca6f1e !important; border: 1px solid #f0b27a !important; }
+  .cat-movement .curse-name { color: #b9560a !important; }
+  .cat-movement .card-badge { background: #fef0e0 !important; color: #b9560a !important; border-color: #f0b27a !important; }
 
   .cat-sensory { border-color: #1abc9c !important; }
   .cat-sensory::before { background: #1abc9c !important; }
-  .cat-sensory .curse-name { color: #148f77 !important; }
-  .cat-sensory .card-badge { background: #e0f8f2 !important; color: #148f77 !important; border: 1px solid #76d7c4 !important; }
+  .cat-sensory .curse-name { color: #0e6655 !important; }
+  .cat-sensory .card-badge { background: #e0f8f2 !important; color: #0e6655 !important; border-color: #76d7c4 !important; }
 
   .cat-physical { border-color: #e74c3c !important; }
   .cat-physical::before { background: #e74c3c !important; }
-  .cat-physical .curse-name { color: #c0392b !important; }
-  .cat-physical .card-badge { background: #fde8e6 !important; color: #c0392b !important; border: 1px solid #f1948a !important; }
+  .cat-physical .curse-name { color: #a93226 !important; }
+  .cat-physical .card-badge { background: #fde8e6 !important; color: #a93226 !important; border-color: #f1948a !important; }
 
   .cat-interaction { border-color: #2ecc71 !important; }
   .cat-interaction::before { background: #2ecc71 !important; }
-  .cat-interaction .curse-name { color: #239b56 !important; }
-  .cat-interaction .card-badge { background: #e5faf0 !important; color: #239b56 !important; border: 1px solid #82e0aa !important; }
+  .cat-interaction .curse-name { color: #1a8a4a !important; }
+  .cat-interaction .card-badge { background: #e5faf0 !important; color: #1a8a4a !important; border-color: #82e0aa !important; }
 
   .cat-collective { border-color: #f1c40f !important; }
   .cat-collective::before { background: #f1c40f !important; }
-  .cat-collective .curse-name { color: #b7950b !important; }
-  .cat-collective .card-badge { background: #fef9e0 !important; color: #b7950b !important; border: 1px solid #f7dc6f !important; }
+  .cat-collective .curse-name { color: #9a7d0a !important; }
+  .cat-collective .card-badge { background: #fef9e0 !important; color: #9a7d0a !important; border-color: #f7dc6f !important; }
 
-  /* Enigma cards: gold styling preserved */
-  .curse-card.enigma { border-color: #b8860b !important; background: #fffef5 !important; }
+  /* Enigma cards: gold, massive fragments */
+  .curse-card.enigma { border-color: #b8860b !important; background: #fffdf0 !important; }
   .curse-card.enigma::before { background: linear-gradient(90deg, #8a6d21, #c9a84c, #8a6d21) !important; }
   .curse-card.enigma::after { display: none; }
-  .enigma-fragment { background: #fdf6e3 !important; border: 2px dashed #b8860b !important; padding: 1.5rem; margin-top: 1.5rem; }
-  .enigma-fragment { padding: 2rem; margin-top: 2rem; }
-  .enigma-label { color: #8a6d21 !important; font-size: 1.3rem; }
-  .enigma-verse { color: #6d5a1e !important; font-size: 1.4rem; line-height: 1.9; }
-  .enigma-code { color: #333 !important; font-size: 1.35rem; }
-  .rune { text-shadow: none; color: #8a6d21 !important; font-size: 2.8rem; }
-  .enigma-note { color: #666 !important; font-size: 1.1rem; }
+  .enigma-fragment {
+    background: #fdf6e3 !important;
+    border: 3px dashed #b8860b !important;
+    padding: 1cm;
+    margin-top: .8cm;
+    border-radius: 12px;
+  }
+  .enigma-label { color: #6d5500 !important; font-size: 20pt; font-weight: 900; }
+  .enigma-verse { color: #5a4a10 !important; font-size: 20pt; line-height: 1.6; }
+  .enigma-code { color: #222 !important; font-size: 22pt; }
+  .rune { text-shadow: none; color: #6d5500 !important; font-size: 44pt; }
+  .enigma-note { color: #555 !important; font-size: 16pt; }
 
   /* Non-card print pages */
   .curse-card:last-child { page-break-after: auto; }
